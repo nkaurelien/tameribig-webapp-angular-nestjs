@@ -1,0 +1,35 @@
+{
+  "public_id": "sample",
+  "format": "jpg",
+  "version": 1371282172,
+  "resource_type": "image",
+  "type": "upload",
+  "created_at": "2017-07-01T11:10:57Z",
+  "bytes": 120264,
+  "width": 864,
+  "height": 576,
+  "url": "http://res.cloudinary.com/demo/image/upload/v1371282172/sample.jpg",
+  "secure_url": "https://.../demo/image/upload/v1371282172/sample.jpg",
+  "next_cursor": "c87e7b39f7fdd66ec31985196b455c40",
+  "derived": [
+    {
+      "transformation": "c_fit,h_150,w_100",
+      "format": "jpg",
+      "bytes": 5729,
+      "id": "1892cd020611691462a8dc6616f81881",
+      "url": "http://.../image/upload/c_fill,w_100,h_100/v1312461204/sample.jpg",
+      "secure_url": "https://.../c_fill,w_100,h_100/v1312461204/sample.jpg"
+    },
+    {
+      "transformation": "w_230,h_168,c_fit",
+      "format": "jpg",
+      "bytes": 18116,
+      "id": "383e22a57167445552a3cdc16f0a0c85",
+      "url": "http://.../image/upload/w_230,h_168,c_fit/v1312461204/sample.jpg",
+      "secure_url": "https://.../upload/w_230,h_168,c_fit/v1312461204/sample.jpg"
+    }
+  ],
+  "rate_limit_allowed": 500,
+  "rate_limit_reset_at": "Sun, 07 Jul 2013 18:00:00 GMT",
+  "rate_limit_remaining": 496
+}
