@@ -3,16 +3,25 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
+import supertokens from 'supertokens-node';
+import { SuperTokensExceptionFilter } from 'supertokens-nestjs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // Security
   app.use(helmet());
+
+  // CORS with SuperTokens headers
+  const websiteDomain = process.env.WEBSITE_DOMAIN || 'http://localhost:3000';
   app.enableCors({
-    origin: process.env.CORS_ORIGIN || '*',
+    origin: [websiteDomain],
+    allowedHeaders: ['content-type', ...supertokens.getAllCORSHeaders()],
     credentials: true,
   });
+
+  // SuperTokens exception filter
+  app.useGlobalFilters(new SuperTokensExceptionFilter());
 
   // Global prefix
   const globalPrefix = process.env.APP_ROUTE_PREFIX || 'api';
