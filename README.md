@@ -1,98 +1,182 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Tameri Project
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API backend built with NestJS 11, CouchDB, Zitadel (OIDC), and MinIO (S3).
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Tech Stack
 
-## Description
+| Component      | Technology            |
+| -------------- | --------------------- |
+| Framework      | NestJS 11.1           |
+| Language       | TypeScript 5.9        |
+| Database       | CouchDB 3             |
+| Authentication | Zitadel (OIDC)        |
+| Object Storage | MinIO (S3 compatible) |
+| Cache          | Redis 7               |
+| Runtime        | Node.js 20+           |
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Quick Start
 
-## Project setup
+### Prerequisites
+
+- Node.js 20+
+- pnpm (or npm)
+- Docker & Docker Compose
+
+### Setup
 
 ```bash
-$ npm install
+# Clone and install dependencies
+pnpm install
+
+# Copy environment file
+cp .env.example .env
+
+# Start infrastructure (CouchDB, Zitadel, MinIO, Redis)
+docker compose up -d
+
+# Start development server
+pnpm run start:dev
 ```
 
-## Compile and run the project
+### Access Services
+
+| Service            | URL                                 | Credentials                                  |
+| ------------------ | ----------------------------------- | -------------------------------------------- |
+| API                | http://localhost:3000               | -                                            |
+| Swagger            | http://localhost:3000/api           | -                                            |
+| Zitadel Console v2 | http://localhost:8080/ui/console    | zitadel-admin@zitadel.localhost / (see logs) |
+| Zitadel Login v2   | http://localhost:3001/ui/v2/login   | -                                            |
+| Zitadel Health     | http://localhost:8080/debug/healthz | -                                            |
+| CouchDB Fauxton    | http://localhost:5984/\_utils       | admin / admin                                |
+| MinIO Console      | http://localhost:9001               | minioadmin / minioadmin                      |
+
+> **Note**: Zitadel generates the admin password at first startup. Check logs with:
+>
+> ```bash
+> docker compose logs zitadel | grep -i password
+> ```
+
+## Development
 
 ```bash
-# development
-$ npm run start
+# Development with hot reload
+pnpm run start:dev
 
-# watch mode
-$ npm run start:dev
+# Debug mode
+pnpm run start:debug
 
-# production mode
-$ npm run start:prod
+# Run tests
+pnpm run test
+
+# Run e2e tests
+pnpm run test:e2e
+
+# Lint
+pnpm run lint
 ```
 
-## Run tests
+## Docker
+
+### Services Overview
+
+| Service           | Container            | Port(s)    | Description                  |
+| ----------------- | -------------------- | ---------- | ---------------------------- |
+| **app**           | tameri-app           | 3000, 9229 | NestJS API (debug on 9229)   |
+| **zitadel**       | tameri-zitadel       | 8080       | Authentication server (OIDC) |
+| **zitadel-login** | tameri-zitadel-login | 3001       | Login v2 UI                  |
+| **zitadel-db**    | tameri-zitadel-db    | -          | PostgreSQL for Zitadel       |
+| **couchdb**       | tameri-couchdb       | 5984       | Document database            |
+| **minio**         | tameri-minio         | 9000, 9001 | S3-compatible storage        |
+| **redis**         | tameri-redis         | 6379       | Cache                        |
+
+### Development
 
 ```bash
-# unit tests
-$ npm run test
+# Start all services with app
+docker compose up -d
 
-# e2e tests
-$ npm run test:e2e
+# Start only infrastructure (without app)
+docker compose up -d couchdb redis minio zitadel zitadel-login
 
-# test coverage
-$ npm run test:cov
+# Rebuild app after changes
+docker compose up -d --build app
+
+# View logs
+docker compose logs -f app
+
+# View Zitadel logs (to get admin password)
+docker compose logs zitadel | grep -i password
+
+# Stop all services
+docker compose down
+
+# Stop and remove volumes (clean reset)
+docker compose down -v
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### Production
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Build and start production stack
+docker compose -f docker-compose.prod.yml up -d
+
+# Stop
+docker compose -f docker-compose.prod.yml down
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Zitadel Configuration
 
-## Resources
+Zitadel uses **Login v2** with a separate login container. Key environment variables:
 
-Check out a few resources that may come in handy when working with NestJS:
+| Variable                 | Default                          | Description               |
+| ------------------------ | -------------------------------- | ------------------------- |
+| `ZITADEL_MASTERKEY`      | MasterkeyNeedsToHave32Characters | Encryption key (32 chars) |
+| `ZITADEL_EXTERNALDOMAIN` | localhost                        | External domain           |
+| `ZITADEL_EXTERNALSECURE` | false                            | Use HTTPS                 |
+| `ZITADEL_DB_NAME`        | zitadel                          | PostgreSQL database       |
+| `ZITADEL_DB_USER`        | zitadel                          | PostgreSQL user           |
+| `ZITADEL_DB_PASSWORD`    | zitadel                          | PostgreSQL password       |
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+First-time setup creates an admin user. Check logs for the generated password.
 
-## Support
+## Project Structure
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```
+src/
+├── @core/              # Core module (shared utilities)
+│   ├── config/         # Configuration service
+│   ├── constants/      # Enums and constants
+│   ├── decorators/     # Custom decorators
+│   ├── exceptions/     # Custom exceptions
+│   ├── filters/        # Exception filters
+│   ├── guards/         # Auth guards
+│   ├── interfaces/     # TypeScript interfaces
+│   ├── middlewares/    # HTTP middlewares
+│   ├── services/       # Utility services
+│   └── utils/          # Helper functions
+├── @api/               # Feature modules
+│   ├── auth/           # Authentication
+│   ├── users/          # User management
+│   └── ...
+├── app.module.ts       # Root module
+└── main.ts             # Entry point
+```
 
-## Stay in touch
+## Environment Variables
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+See [.env.example](.env.example) for all available configuration options.
+
+Key variables:
+
+| Variable         | Description         | Default                           |
+| ---------------- | ------------------- | --------------------------------- |
+| `PORT`           | API port            | 3000                              |
+| `NODE_ENV`       | Environment         | development                       |
+| `COUCHDB_URL`    | CouchDB connection  | http://admin:admin@localhost:5984 |
+| `ZITADEL_ISSUER` | Zitadel OIDC issuer | http://localhost:8080             |
+| `MINIO_ENDPOINT` | MinIO S3 endpoint   | http://localhost:9000             |
+| `REDIS_URL`      | Redis connection    | redis://localhost:6379            |
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+MIT

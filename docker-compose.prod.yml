@@ -1,0 +1,140 @@
+# Tameri Project - Production Stack
+# ==================================
+# Services: App + CouchDB (Database) + MinIO (S3) + Redis
+# Note: Zitadel should be deployed separately in production
+#
+# Usage:
+#   docker compose -f docker-compose.prod.yml up -d
+#   docker compose -f docker-compose.prod.yml down
+#
+# Build & Deploy:
+#   docker compose -f docker-compose.prod.yml build
+#   docker compose -f docker-compose.prod.yml push
+
+services:
+  # ===================
+  # Application (NestJS)
+  # ===================
+  app:
+    container_name: tameri-app
+    build:
+      context: .
+      target: production
+    ports:
+      - '${PORT:-3000}:3000'
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      COUCHDB_URL: http://${COUCHDB_USER}:${COUCHDB_PASSWORD}@couchdb:5984
+      MINIO_ENDPOINT: http://minio:9000
+      REDIS_URL: redis://redis:6379
+    networks:
+      - tameri-network
+    depends_on:
+      couchdb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://localhost:3000/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ===================
+  # Cache (Redis)
+  # ===================
+  redis:
+    container_name: tameri-redis
+    image: redis:7-alpine
+    command: redis-server --appendonly yes --maxmemory 128mb --maxmemory-policy allkeys-lru
+    networks:
+      - tameri-network
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+
+  # ===================
+  # Database (CouchDB)
+  # ===================
+  couchdb:
+    container_name: tameri-couchdb
+    image: couchdb:3
+    networks:
+      - tameri-network
+    environment:
+      COUCHDB_USER: ${COUCHDB_USER}
+      COUCHDB_PASSWORD: ${COUCHDB_PASSWORD}
+    volumes:
+      - couchdb-data:/opt/couchdb/data
+      - couchdb-config:/opt/couchdb/etc/local.d
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:5984/_up']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+
+  # ===================
+  # Object Storage (MinIO - S3 Compatible)
+  # ===================
+  minio:
+    container_name: tameri-minio
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    networks:
+      - tameri-network
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ['CMD', 'mc', 'ready', 'local']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+networks:
+  tameri-network:
+    driver: bridge
+
+volumes:
+  couchdb-data:
+  couchdb-config:
+  minio-data:
+  redis-data:
