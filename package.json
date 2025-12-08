@@ -41,6 +41,7 @@
     "joi": "^18.0.2",
     "lodash": "^4.17.21",
     "mongoose": "^8.20.2",
+    "nano": "^11.0.3",
     "nestjs-pino": "^4.5.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",

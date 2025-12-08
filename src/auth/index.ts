@@ -1,2 +1,2 @@
-export * from './auth.module';
-export * from './supertokens.config';
+export * from './auth.module.js';
+export * from './supertokens.config.js';

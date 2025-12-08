@@ -4,10 +4,14 @@ import { AppService } from './app.service.js';
 import { LoggerModule } from 'nestjs-pino';
 import { AuthModule } from './auth/index.js';
 import { CoreModule } from './@core/index.js';
+import { DatabaseModule } from './database/index.js';
+import { UsersModule } from './users/index.js';
+import { NotificationsModule } from './notifications/index.js';
 
 @Module({
   imports: [
     CoreModule,
+    DatabaseModule,
     LoggerModule.forRoot({
       pinoHttp: {
         transport:
@@ -20,6 +24,8 @@ import { CoreModule } from './@core/index.js';
       exclude: [],
     }),
     AuthModule,
+    UsersModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
