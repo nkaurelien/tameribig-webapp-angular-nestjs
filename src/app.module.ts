@@ -7,11 +7,16 @@ import { CoreModule } from './@core/index.js';
 import { DatabaseModule } from './database/index.js';
 import { UsersModule } from './users/index.js';
 import { NotificationsModule } from './notifications/index.js';
+import { TopicsModule } from './topics/index.js';
+import { SearchModule } from './search/index.js';
+import { StorageModule } from './storage/index.js';
+import { MediaModule } from './media/index.js';
 
 @Module({
   imports: [
     CoreModule,
     DatabaseModule,
+    StorageModule,
     LoggerModule.forRoot({
       pinoHttp: {
         transport:
@@ -26,6 +31,9 @@ import { NotificationsModule } from './notifications/index.js';
     AuthModule,
     UsersModule,
     NotificationsModule,
+    TopicsModule,
+    SearchModule,
+    MediaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
