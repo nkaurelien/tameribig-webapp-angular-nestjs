@@ -197,8 +197,9 @@ services:
       AWS_REGION: us-east-1
       IMGPROXY_ALLOWED_SOURCES: 's3://,http://,https://'
       IMGPROXY_MAX_SRC_RESOLUTION: 50
-      IMGPROXY_ENABLE_WEBP_DETECTION: 'true'
-      IMGPROXY_ENABLE_AVIF_DETECTION: 'true'
+      # Auto-convert to modern formats when browser supports them
+      IMGPROXY_AUTO_WEBP: 'true'
+      IMGPROXY_AUTO_AVIF: 'true'
     ports:
       - '${IMGPROXY_PORT:-8080}:8080'
     depends_on:
