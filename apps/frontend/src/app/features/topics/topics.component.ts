@@ -203,9 +203,9 @@ import { MOCK_TOPICS } from '../../shared/data/mock-topics';
       } @else {
         <div class="flex flex-col items-center justify-center py-20">
           <img
-            src="images/default.jpg"
+            src="images/masque-afrique.jpg"
             alt=""
-            class="w-32 h-32 object-cover rounded-2xl opacity-40 mb-6"
+            class="w-40 h-auto object-contain opacity-60 mb-6"
           />
           <h2 class="text-xl font-semibold text-gray-900 mb-2">
             Aucune catégorie

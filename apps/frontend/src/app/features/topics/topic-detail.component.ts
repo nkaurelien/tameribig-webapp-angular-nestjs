@@ -208,9 +208,9 @@ import { MOCK_MEDIA } from '../../shared/data/mock-media';
       } @else {
         <div class="flex flex-col items-center justify-center py-20">
           <img
-            src="images/default.jpg"
+            src="images/masque-afrique.jpg"
             alt=""
-            class="w-40 h-40 object-cover rounded-2xl opacity-40 mb-6"
+            class="w-40 h-auto object-contain opacity-60 mb-6"
           />
           <h2 class="text-xl font-semibold text-gray-900 mb-2">Aucun média</h2>
           <p class="text-gray-500 mb-6">
