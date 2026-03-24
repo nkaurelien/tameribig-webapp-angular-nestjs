@@ -10,9 +10,10 @@
   /auth/forgot-password → ForgotPasswordComponent
   /auth/logout         → LogoutComponent
 /home                  → MainLayout → HomeComponent
-/explorer/*            → MainLayout → (P2 - à venir)
-/search                → MainLayout → (P2 - à venir)
-/topics                → MainLayout → (P3 - à venir)
+/explorer              → MainLayout → ExplorerComponent
+/search                → MainLayout → SearchComponent
+/topics                → MainLayout → TopicsComponent
+/topics/:slug          → MainLayout → TopicDetailComponent
 /console               → MainLayout → (P3 - à venir, auth required)
 /coorporate/*          → MainLayout → (P4 - à venir)
 /404                   → NotFoundComponent
@@ -23,21 +24,21 @@
 
 ### MainLayout
 
-Contient la navigation, le contenu (`<router-outlet>`) et le footer. Utilisé pour toutes les pages publiques et authentifiées.
+Contient la navigation (header sticky), le contenu (`<router-outlet>`), le footer et le bouton scroll-to-top. Utilisé pour toutes les pages publiques et authentifiées.
 
 ### AuthLayout
 
-Layout minimal centré pour les pages d'authentification. Pas de navigation ni footer.
+Layout minimal centré pour les pages d'authentification. Logo Tameri + carte blanche arrondie. Pas de navigation ni footer.
 
 ## Lazy loading
 
-Toutes les routes utilisent le lazy loading via `loadComponent` / `loadChildren` :
+Toutes les routes utilisent le lazy loading via `loadChildren` :
 
 ```typescript
 {
-  path: 'home',
+  path: 'explorer',
   loadChildren: () =>
-    import('./features/home/home.routes').then(m => m.HOME_ROUTES),
+    import('./features/explorer/explorer.routes').then(m => m.EXPLORER_ROUTES),
 }
 ```
 
@@ -53,11 +54,27 @@ Les routes nécessitant une authentification utilisent `authGuard` :
 }
 ```
 
-## Priorités de migration
+## Pages implémentées
+
+| Route                   | Composant               | Fonctionnalités                                                     |
+| ----------------------- | ----------------------- | ------------------------------------------------------------------- |
+| `/home`                 | HomeComponent           | Recherche Google-style, boutons media type 3D, honeycomb hexagonal  |
+| `/explorer`             | ExplorerComponent       | Grille de médias, filtres pills par type, pagination "charger plus" |
+| `/search`               | SearchComponent         | Barre de recherche, filtres 3D avec ring, recherche côté client     |
+| `/topics`               | TopicsComponent         | Honeycomb hexagonal de catégories + liste accessible                |
+| `/topics/:slug`         | TopicDetailComponent    | Header catégorie, filtres pills, grille de médias                   |
+| `/auth/login`           | LoginComponent          | Email + password + remember me                                      |
+| `/auth/register`        | RegisterComponent       | Email + password + confirmation                                     |
+| `/auth/forgot-password` | ForgotPasswordComponent | Email + envoi lien                                                  |
+| `/auth/logout`          | LogoutComponent         | Déconnexion SuperTokens + redirect                                  |
+| `/404`                  | NotFoundComponent       | Masque africain + liens utiles                                      |
+
+## Priorités restantes
 
 | Priorité | Routes                      | Statut        |
 | -------- | --------------------------- | ------------- |
 | P1       | `/auth/*`, `/home`          | ✅ Implémenté |
-| P2       | `/explorer/*`, `/search`    | En attente    |
-| P3       | `/topics`, `/console`       | En attente    |
+| P2       | `/explorer`, `/search`      | ✅ Implémenté |
+| P3       | `/topics`, `/topics/:slug`  | ✅ Implémenté |
+| P3       | `/console`                  | En attente    |
 | P4       | `/coorporate/*`, `/network` | En attente    |

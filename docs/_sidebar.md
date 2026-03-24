@@ -1,6 +1,7 @@
 - **Accueil**
   - [Présentation](/)
   - [Démarrage rapide](getting-started.md)
+  - [Troubleshooting](troubleshooting.md)
 
 - **Architecture**
   - [Vue d'ensemble](architecture/overview.md)

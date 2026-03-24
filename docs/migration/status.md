@@ -35,33 +35,35 @@
 ### Terminé ✅
 
 - [x] Scaffolding Angular 19 dans `apps/frontend/`
-- [x] Configuration Tailwind CSS 4 + PrimeNG 21 (Aura) + tailwindcss-primeui
+- [x] Configuration Tailwind CSS 4 + PrimeNG 21 (Aura)
 - [x] SuperTokens web-js (init, interceptor, guard, store)
 - [x] NgRx Signal Store (auth state)
 - [x] ApiService (HttpClient wrapper)
 - [x] Modèles partagés (User, Media, Topic)
-- [x] Layouts (MainLayout, AuthLayout)
-- [x] Navigation responsive + Footer
-- [x] Auth — Login (PrimeNG InputText + Password + Button)
-- [x] Auth — Register (avec confirmation mot de passe)
-- [x] Auth — Forgot password
-- [x] Auth — Logout
-- [x] Home (hero, catégories, médias récents, skeleton loading)
-- [x] Page 404
+- [x] Mock data (médias + catégories) pour mode demo sans backend
+- [x] Layouts (MainLayout avec scroll-to-top, AuthLayout)
+- [x] Navigation responsive (header sticky + menu mobile)
+- [x] Footer (4 colonnes avec liens)
+- [x] Auth — Login, Register, Forgot password, Logout
+- [x] Home — Barre de recherche Google-style, boutons media type 3D, honeycomb hexagonal
+- [x] Explorer — Grille de médias, filtres par type (pills), pagination "charger plus"
+- [x] Search — Barre de recherche, filtres 3D avec ring hover, résultats filtrés
+- [x] Topics — Liste en honeycomb hexagonal + liste accessible
+- [x] Topic detail — Header, filtres pills, grille de médias
+- [x] Page 404 avec masque africain
+- [x] Scroll-to-top (bouton fixe, toutes les pages)
+- [x] Assets originaux (logos, icônes 3D, icônes flat, hexaimage, favicon)
 - [x] Proxy dev (/api, /auth → backend:3000)
 - [x] Build production fonctionnel
 
 ### Non commencé ❌ (par priorité)
 
-| Priorité | Module    | Description                              |
-| -------- | --------- | ---------------------------------------- |
-| P2       | Explorer  | Grille d'images, vidéos, audio (masonry) |
-| P2       | Search    | Recherche globale + suggestions          |
-| P3       | Topics    | Navigation par catégories                |
-| P3       | Console   | Dashboard utilisateur                    |
-| P4       | Corporate | About, FAQ, Contact, Services, Privacy   |
-| P4       | Network   | Réseau social / utilisateurs             |
-| P4       | Help      | Page d'aide                              |
+| Priorité | Module    | Description                            |
+| -------- | --------- | -------------------------------------- |
+| P3       | Console   | Dashboard utilisateur                  |
+| P4       | Corporate | About, FAQ, Contact, Services, Privacy |
+| P4       | Network   | Réseau social / utilisateurs           |
+| P4       | Help      | Page d'aide                            |
 
 ## Documentation
 
