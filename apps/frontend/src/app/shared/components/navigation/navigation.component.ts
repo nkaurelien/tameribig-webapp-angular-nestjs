@@ -16,11 +16,11 @@ import { AuthStore } from '../../../store/auth.store';
             routerLink="/home"
             class="flex items-center gap-2 no-underline shrink-0"
           >
-            <div
-              class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center"
-            >
-              <span class="text-white font-bold text-sm">T</span>
-            </div>
+            <img
+              src="images/tameri-logo1.png"
+              alt="Tameri"
+              class="w-8 h-8 rounded-full"
+            />
             <span class="text-gray-900 font-semibold text-lg hidden sm:block"
               >Tameri</span
             >

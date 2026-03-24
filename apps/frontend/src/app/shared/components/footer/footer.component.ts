@@ -14,11 +14,11 @@ import { RouterLink } from '@angular/router';
               routerLink="/home"
               class="flex items-center gap-2 no-underline mb-4"
             >
-              <div
-                class="w-7 h-7 bg-indigo-600 rounded-lg flex items-center justify-center"
-              >
-                <span class="text-white font-bold text-xs">T</span>
-              </div>
+              <img
+                src="images/tameri-logo1.png"
+                alt="Tameri"
+                class="w-7 h-7 rounded-full"
+              />
               <span class="text-gray-900 font-semibold">Tameri</span>
             </a>
             <p class="text-sm text-gray-500 leading-relaxed">

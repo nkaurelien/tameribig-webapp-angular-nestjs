@@ -9,12 +9,12 @@ import { RouterOutlet, RouterLink } from '@angular/router';
     <div
       class="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4 py-12"
     >
-      <a routerLink="/home" class="flex items-center gap-2 no-underline mb-8">
-        <div
-          class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center"
-        >
-          <span class="text-white font-bold text-lg">T</span>
-        </div>
+      <a routerLink="/home" class="flex items-center gap-3 no-underline mb-8">
+        <img
+          src="images/tameri-logo1.png"
+          alt="Tameri"
+          class="w-10 h-10 rounded-full"
+        />
         <span class="text-gray-900 font-bold text-2xl">Tameri</span>
       </a>
       <div

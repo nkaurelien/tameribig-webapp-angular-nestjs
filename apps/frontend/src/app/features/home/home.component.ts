@@ -23,15 +23,15 @@ import { Topic } from '../../shared/models/topic.model';
       class="flex flex-col items-center justify-center px-4 pt-16 pb-12"
       style="min-height: 50vh"
     >
-      <div
-        class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center mb-6"
-      >
-        <span class="text-white font-bold text-lg">T</span>
-      </div>
+      <img
+        src="images/tameri-logo.png"
+        alt="Tameri"
+        class="w-24 h-24 object-contain mb-4"
+      />
       <h1 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-2">
         Tameri
       </h1>
-      <p class="text-gray-500 text-lg mb-10">Explorez des créations uniques</p>
+      <p class="text-gray-500 text-lg mb-10">Beautiful Inspiration Ground</p>
 
       <!-- Search bar -->
       <div class="w-full max-w-xl">
