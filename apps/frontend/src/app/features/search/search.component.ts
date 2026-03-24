@@ -185,11 +185,11 @@ import { MOCK_MEDIA } from '../../shared/data/mock-media';
       </div>
 
       <!-- Results header -->
-      @if (searchQuery) {
+      @if (submittedQuery()) {
         <div class="mb-6">
           <h1 class="text-2xl font-bold text-gray-900">
             Résultats pour "<span class="text-indigo-600">{{
-              searchQuery
+              submittedQuery()
             }}</span
             >"
           </h1>
@@ -238,12 +238,12 @@ import { MOCK_MEDIA } from '../../shared/data/mock-media';
             alt=""
             class="w-40 h-auto object-contain opacity-70 mb-6"
           />
-          @if (searchQuery) {
+          @if (submittedQuery()) {
             <h2 class="text-xl font-semibold text-gray-900 mb-2">
               Aucun résultat
             </h2>
             <p class="text-gray-500 text-center max-w-md mb-6">
-              Votre recherche "<strong>{{ searchQuery }}</strong
+              Votre recherche "<strong>{{ submittedQuery() }}</strong
               >" n'a rien donné. Essayez d'autres mots-clés.
             </p>
             <button
@@ -271,13 +271,14 @@ export class SearchComponent implements OnInit {
   private readonly router = inject(Router);
 
   searchQuery = '';
+  submittedQuery = signal('');
   allMedia = signal<PublicMedia[]>([]);
   activeFilter = signal<string | null>(null);
   loading = signal(true);
 
   filteredResults = computed(() => {
     let results = this.allMedia();
-    const q = this.searchQuery.toLowerCase().trim();
+    const q = this.submittedQuery().toLowerCase().trim();
     const filter = this.activeFilter();
 
     // Text filter
@@ -302,6 +303,7 @@ export class SearchComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       if (params['q']) {
         this.searchQuery = params['q'];
+        this.submittedQuery.set(params['q']);
       }
       if (params['type']) {
         this.activeFilter.set(params['type']);
@@ -312,6 +314,7 @@ export class SearchComponent implements OnInit {
   }
 
   onSearch() {
+    this.submittedQuery.set(this.searchQuery);
     this.router.navigate([], {
       queryParams: { q: this.searchQuery || null, type: this.activeFilter() },
       queryParamsHandling: 'merge',
@@ -320,6 +323,7 @@ export class SearchComponent implements OnInit {
 
   clearSearch() {
     this.searchQuery = '';
+    this.submittedQuery.set('');
     this.activeFilter.set(null);
     this.router.navigate(['/search']);
   }
