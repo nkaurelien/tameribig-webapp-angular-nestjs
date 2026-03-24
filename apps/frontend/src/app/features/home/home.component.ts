@@ -26,7 +26,7 @@ import { Topic } from '../../shared/models/topic.model';
       <img
         src="images/tameri-logo.png"
         alt="Tameri"
-        class="w-24 h-24 object-contain mb-4"
+        class="h-28 w-auto object-contain mb-4"
       />
       <h1 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-2">
         Tameri
@@ -59,19 +59,109 @@ import { Topic } from '../../shared/models/topic.model';
         </div>
 
         <!-- Buttons -->
-        <div class="flex justify-center gap-3 mt-6">
+        <div class="flex justify-center gap-4 mt-6">
           <button
             (click)="onSearch()"
-            class="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 text-sm font-medium px-6 py-2.5 rounded-lg transition-colors"
+            class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-8 py-3 rounded-full shadow-sm hover:shadow-md transition-all"
           >
-            Explorer
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            Rechercher
           </button>
           <button
             routerLink="/explorer"
-            class="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 text-sm font-medium px-6 py-2.5 rounded-lg transition-colors"
+            class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 text-sm font-medium px-8 py-3 rounded-full shadow-sm hover:shadow-md transition-all"
           >
-            J'ai de la chance
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 10h16M4 14h16M4 18h16"
+              />
+            </svg>
+            Explorer tout
           </button>
+        </div>
+
+        <!-- Media type buttons -->
+        <div class="flex justify-center gap-6 sm:gap-10 mt-10">
+          <a
+            routerLink="/explorer"
+            [queryParams]="{ type: 'image' }"
+            class="flex flex-col items-center gap-2 no-underline group"
+          >
+            <img
+              src="images/camera.png"
+              alt="Photos"
+              class="h-14 sm:h-16 w-auto object-contain transition-transform group-hover:scale-110"
+            />
+            <span
+              class="text-xs sm:text-sm text-gray-500 group-hover:text-gray-900 font-medium transition-colors"
+              >Photos</span
+            >
+          </a>
+          <a
+            routerLink="/explorer"
+            [queryParams]="{ type: 'video' }"
+            class="flex flex-col items-center gap-2 no-underline group"
+          >
+            <img
+              src="images/video.png"
+              alt="Vidéos"
+              class="h-14 sm:h-16 w-auto object-contain transition-transform group-hover:scale-110"
+            />
+            <span
+              class="text-xs sm:text-sm text-gray-500 group-hover:text-gray-900 font-medium transition-colors"
+              >Vidéos</span
+            >
+          </a>
+          <a
+            routerLink="/explorer"
+            [queryParams]="{ type: 'audio' }"
+            class="flex flex-col items-center gap-2 no-underline group"
+          >
+            <img
+              src="images/audio.png"
+              alt="Audio"
+              class="h-14 sm:h-16 w-auto object-contain transition-transform group-hover:scale-110"
+            />
+            <span
+              class="text-xs sm:text-sm text-gray-500 group-hover:text-gray-900 font-medium transition-colors"
+              >Audio</span
+            >
+          </a>
+          <a
+            routerLink="/explorer"
+            [queryParams]="{ type: 'illustration' }"
+            class="flex flex-col items-center gap-2 no-underline group"
+          >
+            <img
+              src="images/illustration.png"
+              alt="Illustrations"
+              class="h-14 sm:h-16 w-auto object-contain transition-transform group-hover:scale-110"
+            />
+            <span
+              class="text-xs sm:text-sm text-gray-500 group-hover:text-gray-900 font-medium transition-colors"
+              >Illustrations</span
+            >
+          </a>
         </div>
 
         <!-- Category chips -->
