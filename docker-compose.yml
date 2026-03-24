@@ -16,6 +16,8 @@
 #   - MinIO Console:      http://localhost:9001
 #   - imgproxy:           http://localhost:8080
 
+name: tameri-project 
+
 services:
   # ===================
   # Application (NestJS)
@@ -23,10 +25,10 @@ services:
   app:
     container_name: tameri-app
     build:
-      context: .
+      context: ./apps/backend
       target: development
     volumes:
-      - .:/app
+      - ./apps/backend:/app
       - /app/node_modules
     ports:
       - '${PORT:-3000}:3000'

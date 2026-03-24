@@ -16,6 +16,8 @@
 #   - CouchDB Fauxton:  http://localhost:5984/_utils
 #   - MinIO Console:    http://localhost:9001
 
+name: tameri
+
 services:
   # ===================
   # Application (NestJS)

@@ -1,36 +1,43 @@
-# Tameri Project - Makefile
-# ==========================
+# Tameri Project - Monorepo Makefile
+# ==================================
 # Usage: make <target>
 
-.PHONY: help install dev build start test lint format docker-up docker-down docker-logs docker-clean db-setup
+.PHONY: help install dev build start test lint format docker-up docker-down docker-logs docker-clean db-setup docs
 
 # Default target
 help:
-	@echo "Tameri Project - Available Commands"
-	@echo "===================================="
+	@echo "Tameri Project - Monorepo Commands"
+	@echo "==================================="
 	@echo ""
 	@echo "Development:"
-	@echo "  make install      - Install dependencies"
-	@echo "  make dev          - Start development server"
-	@echo "  make build        - Build the project"
-	@echo "  make start        - Start production server"
-	@echo "  make test         - Run tests"
-	@echo "  make lint         - Run ESLint"
-	@echo "  make format       - Format code with Prettier"
+	@echo "  make install          - Install all dependencies"
+	@echo "  make dev              - Start backend development server"
+	@echo "  make dev-frontend     - Start frontend development server"
+	@echo "  make build            - Build all packages"
+	@echo "  make build-backend    - Build backend only"
+	@echo "  make build-frontend   - Build frontend only"
+	@echo "  make start            - Start production servers"
+	@echo "  make test             - Run all tests"
+	@echo "  make test-backend     - Run backend tests"
+	@echo "  make lint             - Run ESLint on all packages"
+	@echo "  make format           - Format code with Prettier"
+	@echo ""
+	@echo "Documentation:"
+	@echo "  make docs             - Start documentation server (Docsify)"
 	@echo ""
 	@echo "Docker:"
-	@echo "  make docker-up    - Start all Docker services"
-	@echo "  make docker-down  - Stop all Docker services"
-	@echo "  make docker-logs  - Show Docker logs (follow)"
-	@echo "  make docker-clean - Stop and remove volumes"
-	@echo "  make docker-build - Rebuild Docker images"
+	@echo "  make docker-up        - Start all Docker services"
+	@echo "  make docker-down      - Stop all Docker services"
+	@echo "  make docker-logs      - Show Docker logs (follow)"
+	@echo "  make docker-clean     - Stop and remove volumes"
+	@echo "  make docker-build     - Rebuild Docker images"
 	@echo ""
 	@echo "Database:"
-	@echo "  make db-setup     - Initialize CouchDB databases"
-	@echo "  make db-backup    - Backup CouchDB data"
+	@echo "  make db-setup         - Initialize CouchDB databases"
+	@echo "  make db-backup        - Backup CouchDB data"
 	@echo ""
 	@echo "Services:"
-	@echo "  make services     - Show service URLs"
+	@echo "  make services         - Show service URLs"
 
 # ===================
 # Development
@@ -40,19 +47,40 @@ install:
 	pnpm install
 
 dev:
-	pnpm run start:dev
+	pnpm run dev:backend
+
+dev-backend:
+	pnpm run dev:backend
+
+dev-frontend:
+	pnpm run dev:frontend
 
 build:
 	pnpm run build
 
+build-backend:
+	pnpm run build:backend
+
+build-frontend:
+	pnpm run build:frontend
+
 start:
-	pnpm run start:prod
+	pnpm run start
+
+start-backend:
+	pnpm run start:backend
+
+start-frontend:
+	pnpm run start:frontend
 
 test:
 	pnpm run test
 
+test-backend:
+	pnpm run test:backend
+
 test-watch:
-	pnpm run test:watch
+	pnpm --filter @tameri/backend run test:watch
 
 test-cov:
 	pnpm run test:cov
@@ -62,6 +90,12 @@ test-e2e:
 
 lint:
 	pnpm run lint
+
+lint-backend:
+	pnpm run lint:backend
+
+lint-frontend:
+	pnpm run lint:frontend
 
 format:
 	pnpm run format
@@ -147,7 +181,9 @@ services:
 	@echo "Service URLs:"
 	@echo "============="
 	@echo "  API:              http://localhost:3000"
-	@echo "  Swagger Docs:     http://localhost:3000/api"
+	@echo "  Swagger Docs:     http://localhost:3000/docs"
+	@echo "  Frontend:         http://localhost:4200"
+	@echo "  Documentation:    http://localhost:3333"
 	@echo "  SuperTokens:      http://localhost:3567"
 	@echo "  CouchDB Fauxton:  http://localhost:5984/_utils"
 	@echo "  MinIO Console:    http://localhost:9001"
@@ -160,6 +196,15 @@ services:
 	@echo "  CouchDB:    admin / admin"
 	@echo "  MinIO:      minioadmin / minioadmin"
 	@echo "  PostgreSQL: postgres / postgres"
+
+# ===================
+# Documentation
+# ===================
+
+docs:
+	@echo "Starting Docsify documentation server..."
+	@echo "  → http://localhost:3333"
+	pnpm run docs
 
 # ===================
 # Quick Setup
@@ -179,7 +224,7 @@ setup: install docker-up
 # ===================
 
 clean:
-	rm -rf dist node_modules .pnpm-store
+	rm -rf apps/backend/dist apps/frontend/dist node_modules apps/*/node_modules .pnpm-store
 
 clean-all: docker-clean clean
 	@echo "Full cleanup complete"
