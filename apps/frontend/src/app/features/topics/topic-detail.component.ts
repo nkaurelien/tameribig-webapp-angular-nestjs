@@ -49,132 +49,24 @@ import { MOCK_MEDIA } from '../../shared/data/mock-media';
         </div>
       }
 
-      <!-- Media type filters (like legacy) -->
-      <div class="mb-8">
-        <h2 class="text-center text-sm font-semibold text-gray-500 mb-4">
-          Filtrer le résultat
-        </h2>
-        <div class="flex justify-center gap-6 sm:gap-10">
+      <!-- Filter tabs -->
+      <div class="flex gap-2 mb-8 overflow-x-auto pb-2">
+        @for (tab of filterTabs; track tab.value) {
           <button
-            (click)="setFilter(null)"
-            class="flex flex-col items-center gap-2 group"
+            (click)="setFilter(tab.value)"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors"
+            [class]="
+              activeFilter() === tab.value
+                ? 'bg-indigo-600 text-white shadow-sm'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            "
           >
-            <div
-              class="w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center transition-all"
-              [class]="
-                activeFilter() === null
-                  ? 'bg-indigo-100 ring-2 ring-indigo-500'
-                  : 'bg-gray-100 group-hover:bg-gray-200'
-              "
-            >
-              <svg
-                class="w-6 h-6"
-                [class]="
-                  activeFilter() === null ? 'text-indigo-600' : 'text-gray-500'
-                "
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 10h16M4 14h16M4 18h16"
-                />
-              </svg>
-            </div>
-            <span
-              class="text-xs font-medium"
-              [class]="
-                activeFilter() === null ? 'text-indigo-600' : 'text-gray-500'
-              "
-              >Tous</span
-            >
+            @if (tab.icon) {
+              <img [src]="tab.icon" [alt]="tab.label" class="h-5 w-auto" />
+            }
+            {{ tab.label }}
           </button>
-          <button
-            (click)="setFilter('image')"
-            class="flex flex-col items-center gap-2 group"
-          >
-            <img
-              src="images/camera.png"
-              alt="Photos"
-              class="h-14 sm:h-16 w-auto object-contain transition-transform group-hover:scale-110"
-              [class.ring-2]="activeFilter() === 'image'"
-              [class.ring-orange-400]="activeFilter() === 'image'"
-              [class.rounded-full]="activeFilter() === 'image'"
-            />
-            <span
-              class="text-xs font-medium"
-              [class]="
-                activeFilter() === 'image' ? 'text-orange-600' : 'text-gray-500'
-              "
-              >Images</span
-            >
-          </button>
-          <button
-            (click)="setFilter('video')"
-            class="flex flex-col items-center gap-2 group"
-          >
-            <img
-              src="images/video.png"
-              alt="Vidéos"
-              class="h-14 sm:h-16 w-auto object-contain transition-transform group-hover:scale-110"
-              [class.ring-2]="activeFilter() === 'video'"
-              [class.ring-purple-400]="activeFilter() === 'video'"
-              [class.rounded-full]="activeFilter() === 'video'"
-            />
-            <span
-              class="text-xs font-medium"
-              [class]="
-                activeFilter() === 'video' ? 'text-purple-600' : 'text-gray-500'
-              "
-              >Vidéos</span
-            >
-          </button>
-          <button
-            (click)="setFilter('audio')"
-            class="flex flex-col items-center gap-2 group"
-          >
-            <img
-              src="images/audio.png"
-              alt="Audio"
-              class="h-14 sm:h-16 w-auto object-contain transition-transform group-hover:scale-110"
-              [class.ring-2]="activeFilter() === 'audio'"
-              [class.ring-blue-400]="activeFilter() === 'audio'"
-              [class.rounded-full]="activeFilter() === 'audio'"
-            />
-            <span
-              class="text-xs font-medium"
-              [class]="
-                activeFilter() === 'audio' ? 'text-blue-600' : 'text-gray-500'
-              "
-              >Audios</span
-            >
-          </button>
-          <button
-            (click)="setFilter('illustration')"
-            class="flex flex-col items-center gap-2 group"
-          >
-            <img
-              src="images/illustration.png"
-              alt="Créas"
-              class="h-14 sm:h-16 w-auto object-contain transition-transform group-hover:scale-110"
-              [class.ring-2]="activeFilter() === 'illustration'"
-              [class.ring-green-400]="activeFilter() === 'illustration'"
-              [class.rounded-full]="activeFilter() === 'illustration'"
-            />
-            <span
-              class="text-xs font-medium"
-              [class]="
-                activeFilter() === 'illustration'
-                  ? 'text-green-600'
-                  : 'text-gray-500'
-              "
-              >Créas</span
-            >
-          </button>
-        </div>
+        }
       </div>
 
       <!-- Results count -->
@@ -248,6 +140,14 @@ export class TopicDetailComponent implements OnInit {
   allMedia = signal<PublicMedia[]>([]);
   activeFilter = signal<string | null>(null);
   loading = signal(true);
+
+  filterTabs = [
+    { label: 'Tous', value: null, icon: '' },
+    { label: 'Photos', value: 'image', icon: 'images/camera.png' },
+    { label: 'Vidéos', value: 'video', icon: 'images/video.png' },
+    { label: 'Audio', value: 'audio', icon: 'images/audio.png' },
+    { label: 'Créas', value: 'illustration', icon: 'images/illustration.png' },
+  ];
 
   filteredMedia = computed(() => {
     const filter = this.activeFilter();

@@ -37,7 +37,13 @@ export const routes: Routes = [
             (m) => m.EXPLORER_ROUTES,
           ),
       },
-      // { path: 'search', loadChildren: () => import('./features/search/search.routes').then(m => m.SEARCH_ROUTES) },
+      {
+        path: 'search',
+        loadChildren: () =>
+          import('./features/search/search.routes').then(
+            (m) => m.SEARCH_ROUTES,
+          ),
+      },
       {
         path: 'topics',
         loadChildren: () =>
