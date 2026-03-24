@@ -38,7 +38,13 @@ export const routes: Routes = [
           ),
       },
       // { path: 'search', loadChildren: () => import('./features/search/search.routes').then(m => m.SEARCH_ROUTES) },
-      // { path: 'topics', loadChildren: () => import('./features/topics/topics.routes').then(m => m.TOPICS_ROUTES) },
+      {
+        path: 'topics',
+        loadChildren: () =>
+          import('./features/topics/topics.routes').then(
+            (m) => m.TOPICS_ROUTES,
+          ),
+      },
       // { path: 'console', loadChildren: () => import('./features/console/console.routes').then(m => m.CONSOLE_ROUTES) },
       // { path: 'coorporate', loadChildren: () => import('./features/coorporate/coorporate.routes').then(m => m.COORPORATE_ROUTES) },
       { path: '', redirectTo: 'home', pathMatch: 'full' },

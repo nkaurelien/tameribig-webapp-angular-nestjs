@@ -1,0 +1,68 @@
+import { Topic } from '../models/topic.model';
+
+export const MOCK_TOPICS: Topic[] = [
+  {
+    _id: 'topic-1',
+    type: 'topic',
+    name: 'Mate Painting',
+    slug: 'mate-painting',
+    description: 'Peintures mates et textures naturelles.',
+    createdAt: '2025-01-15T10:00:00.000Z',
+  },
+  {
+    _id: 'topic-2',
+    type: 'topic',
+    name: 'Dessin',
+    slug: 'dessin',
+    description: 'Croquis, esquisses et dessins au crayon.',
+    createdAt: '2025-01-20T10:00:00.000Z',
+  },
+  {
+    _id: 'topic-3',
+    type: 'topic',
+    name: 'Illustration',
+    slug: 'illustration',
+    description: 'Illustrations numériques et traditionnelles.',
+    createdAt: '2025-02-01T10:00:00.000Z',
+  },
+  {
+    _id: 'topic-4',
+    type: 'topic',
+    name: 'Digital Painting',
+    slug: 'digital-painting',
+    description: 'Art numérique et peinture digitale.',
+    createdAt: '2025-02-10T10:00:00.000Z',
+  },
+  {
+    _id: 'topic-5',
+    type: 'topic',
+    name: 'Photographie',
+    slug: 'photographie',
+    description: 'Photos artistiques et reportages visuels.',
+    createdAt: '2025-02-15T10:00:00.000Z',
+  },
+  {
+    _id: 'topic-6',
+    type: 'topic',
+    name: 'Musique',
+    slug: 'musique',
+    description: 'Compositions, beats et créations sonores.',
+    createdAt: '2025-03-01T10:00:00.000Z',
+  },
+  {
+    _id: 'topic-7',
+    type: 'topic',
+    name: 'Vidéo',
+    slug: 'video',
+    description: 'Courts-métrages, clips et animations.',
+    createdAt: '2025-03-10T10:00:00.000Z',
+  },
+  {
+    _id: 'topic-8',
+    type: 'topic',
+    name: 'Animation',
+    slug: 'animation',
+    description: '2D, 3D et motion design.',
+    createdAt: '2025-03-15T10:00:00.000Z',
+  },
+];

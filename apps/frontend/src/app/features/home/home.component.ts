@@ -11,6 +11,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/services/api.service';
 import { Topic } from '../../shared/models/topic.model';
+import { MOCK_TOPICS } from '../../shared/data/mock-topics';
 
 @Component({
   selector: 'app-home',
@@ -328,8 +329,8 @@ export class HomeComponent implements OnInit {
 
   private loadData() {
     this.api.get<Topic[]>('/topics').subscribe({
-      next: (data) => this.topics.set(data),
-      error: () => {},
+      next: (data) => this.topics.set(data.length > 0 ? data : MOCK_TOPICS),
+      error: () => this.topics.set(MOCK_TOPICS),
     });
   }
 }
