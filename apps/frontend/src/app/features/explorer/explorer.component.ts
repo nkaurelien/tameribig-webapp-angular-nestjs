@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../core/services/api.service';
 import { PublicMedia, MediaType } from '../../shared/models/media.model';
 import { MediaCardComponent } from '../../shared/components/media-card/media-card.component';
@@ -15,7 +15,7 @@ interface FilterTab {
 @Component({
   selector: 'app-explorer',
   standalone: true,
-  imports: [CommonModule, RouterLink, MediaCardComponent],
+  imports: [CommonModule, MediaCardComponent],
   template: `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- Header -->
