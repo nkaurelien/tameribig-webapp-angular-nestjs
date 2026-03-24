@@ -1,9 +1,15 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  computed,
+  HostListener,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/services/api.service';
-import { PublicMedia } from '../../shared/models/media.model';
 import { Topic } from '../../shared/models/topic.model';
 
 @Component({
@@ -12,8 +18,52 @@ import { Topic } from '../../shared/models/topic.model';
   imports: [CommonModule, RouterLink, FormsModule],
   styles: [
     `
-      .diamond {
-        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      :host {
+        display: block;
+      }
+
+      .honeycomb {
+        width: 100%;
+        overflow: hidden;
+      }
+
+      .hex-row {
+        display: flex;
+        margin-left: calc((var(--hex-size) + var(--hex-margin) * 2) * -1);
+      }
+
+      .hex-row + .hex-row {
+        margin-top: calc(var(--hex-gap) * -1);
+      }
+
+      .hex-row.even {
+        margin-left: calc(
+          var(--hex-size) / 2 +
+            var(--hex-margin) - var(--hex-size) - var(--hex-margin) * 2
+        );
+      }
+
+      .hex-item {
+        flex-shrink: 0;
+        width: var(--hex-size);
+        margin: 0 var(--hex-margin);
+        cursor: pointer;
+        transition:
+          transform 0.3s ease,
+          opacity 0.3s ease;
+      }
+
+      .hex-item:hover {
+        transform: scale(1.08);
+        opacity: 0.85;
+        z-index: 1;
+        position: relative;
+      }
+
+      .hex-item img {
+        width: 100%;
+        height: auto;
+        display: block;
       }
     `,
   ],
@@ -180,32 +230,26 @@ import { Topic } from '../../shared/models/topic.model';
       </div>
     </section>
 
-    <!-- Section 2: Diamond mosaic -->
-    <section class="w-full overflow-hidden bg-gray-50 py-4">
-      <div
-        class="grid gap-1 justify-center px-1"
-        [style.gridTemplateColumns]="
-          'repeat(auto-fill, minmax(' + diamondSize + 'px, 1fr))'
-        "
-      >
-        @for (item of mosaicItems(); track $index) {
-          <div
-            class="diamond relative cursor-pointer transition-transform hover:scale-105 hover:z-10"
-            [style.aspectRatio]="'1'"
-            [style.background]="item.color"
-          >
-            @if (item.thumbnail) {
+    <!-- Section 2: Hexagon Honeycomb (full width, repeating) -->
+    <section
+      class="honeycomb mb-12"
+      [style.--hex-size]="hexSize + 'px'"
+      [style.--hex-margin]="hexMargin + 'px'"
+      [style.--hex-gap]="hexGap + 'px'"
+    >
+      @for (row of hexRows(); track $index) {
+        <div class="hex-row" [class.even]="$index % 2 === 1">
+          @for (imgIdx of row; track $index) {
+            <div class="hex-item">
               <img
-                [src]="item.thumbnail"
-                [alt]="item.title"
+                [src]="'images/hexaimage/' + pad(imgIdx) + '.png'"
+                [alt]="'Mosaic ' + imgIdx"
                 loading="lazy"
-                class="absolute inset-0 w-[142%] h-[142%] object-cover"
-                style="top: 50%; left: 50%; transform: translate(-50%, -50%)"
               />
-            }
-          </div>
-        }
-      </div>
+            </div>
+          }
+        </div>
+      }
     </section>
   `,
 })
@@ -215,38 +259,61 @@ export class HomeComponent implements OnInit {
 
   searchQuery = '';
   topics = signal<Topic[]>([]);
-  media = signal<PublicMedia[]>([]);
-  mosaicItems = signal<
-    { thumbnail: string | null; title: string; color: string }[]
-  >([]);
 
-  readonly diamondSize = window.innerWidth < 768 ? 100 : 160;
+  private readonly totalImages = 36;
+  private screenWidth = signal(
+    typeof window !== 'undefined' ? window.innerWidth : 1200,
+  );
 
-  private readonly colors = [
-    '#e0e7ff',
-    '#dbeafe',
-    '#ede9fe',
-    '#fce7f3',
-    '#fef3c7',
-    '#d1fae5',
-    '#cffafe',
-    '#e0f2fe',
-    '#f3e8ff',
-    '#fce4ec',
-    '#fff7ed',
-    '#ecfdf5',
-    '#eff6ff',
-    '#faf5ff',
-    '#fdf2f8',
-    '#f0fdf4',
-    '#f0f9ff',
-    '#fefce8',
-    '#f5f3ff',
-    '#fff1f2',
-  ];
+  // Hex sizing — responsive
+  get hexSize(): number {
+    const w = this.screenWidth();
+    if (w < 480) return 70;
+    if (w < 768) return 90;
+    return 130;
+  }
+
+  get hexMargin(): number {
+    return this.hexSize < 90 ? 2 : 4;
+  }
+
+  get hexGap(): number {
+    // Vertical overlap — hexagons have ~25% transparent top/bottom points
+    return Math.round(this.hexSize * 0.22);
+  }
+
+  // Calculate how many hexagons per row to fill the screen width
+  hexRows = computed(() => {
+    const w = this.screenWidth();
+    const cellWidth = this.hexSize + this.hexMargin * 2;
+    const perRow = Math.ceil(w / cellWidth) + 3; // +3 to overflow both edges
+    const numRows = 5;
+    const rows: number[][] = [];
+
+    for (let r = 0; r < numRows; r++) {
+      const count = r % 2 === 1 ? perRow : perRow;
+      const row: number[] = [];
+      for (let c = 0; c < count; c++) {
+        // Cycle through the 36 images
+        const imgIdx = ((r * perRow + c) % this.totalImages) + 1;
+        row.push(imgIdx);
+      }
+      rows.push(row);
+    }
+    return rows;
+  });
+
+  @HostListener('window:resize')
+  onResize() {
+    this.screenWidth.set(window.innerWidth);
+  }
 
   ngOnInit() {
     this.loadData();
+  }
+
+  pad(n: number): string {
+    return n.toString().padStart(2, '0');
   }
 
   onSearch() {
@@ -264,34 +331,5 @@ export class HomeComponent implements OnInit {
       next: (data) => this.topics.set(data),
       error: () => {},
     });
-
-    this.api.get<PublicMedia[]>('/media?limit=40').subscribe({
-      next: (data) => {
-        this.media.set(data);
-        this.buildMosaic(data);
-      },
-      error: () => this.buildMosaic([]),
-    });
-  }
-
-  private buildMosaic(items: PublicMedia[]) {
-    const total = 40;
-    const mosaic = [];
-    for (let i = 0; i < total; i++) {
-      if (i < items.length && items[i].urls.thumbnail) {
-        mosaic.push({
-          thumbnail: items[i].urls.thumbnail!,
-          title: items[i].title,
-          color: this.colors[i % this.colors.length],
-        });
-      } else {
-        mosaic.push({
-          thumbnail: null,
-          title: '',
-          color: this.colors[i % this.colors.length],
-        });
-      }
-    }
-    this.mosaicItems.set(mosaic);
   }
 }
