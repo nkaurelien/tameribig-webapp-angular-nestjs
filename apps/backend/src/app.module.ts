@@ -11,6 +11,7 @@ import { TopicsModule } from './topics/index.js';
 import { SearchModule } from './search/index.js';
 import { StorageModule } from './storage/index.js';
 import { MediaModule } from './media/index.js';
+import { SeederModule } from './seeder/index.js';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { MediaModule } from './media/index.js';
     TopicsModule,
     SearchModule,
     MediaModule,
+    SeederModule,
   ],
   controllers: [AppController],
   providers: [AppService],

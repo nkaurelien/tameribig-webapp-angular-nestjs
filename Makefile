@@ -34,6 +34,7 @@ help:
 	@echo ""
 	@echo "Database:"
 	@echo "  make db-setup         - Initialize CouchDB databases"
+	@echo "  make db-seed          - Seed demo data into CouchDB"
 	@echo "  make db-backup        - Backup CouchDB data"
 	@echo ""
 	@echo "Services:"
@@ -149,6 +150,10 @@ db-setup:
 	@curl -X PUT http://admin:admin@localhost:5984/search_suggestions 2>/dev/null || true
 	@curl -X PUT http://admin:admin@localhost:5984/media 2>/dev/null || true
 	@echo "Databases created!"
+
+db-seed:
+	@echo "Seeding demo data into CouchDB..."
+	pnpm run seed
 
 db-list:
 	@curl -s http://admin:admin@localhost:5984/_all_dbs | jq

@@ -24,6 +24,7 @@
     "test:frontend": "pnpm --filter @tameri/frontend test",
     "test:cov": "pnpm --filter @tameri/backend test:cov",
     "test:e2e": "pnpm --filter @tameri/backend test:e2e",
+    "seed": "pnpm --filter @tameri/backend seed",
     "docs": "npx docsify-cli serve docs --port 3333",
     "prepare": "husky"
   },
