@@ -65,4 +65,28 @@ export const MOCK_TOPICS: Topic[] = [
     description: '2D, 3D et motion design.',
     createdAt: '2025-03-15T10:00:00.000Z',
   },
+  {
+    _id: 'topic-9',
+    type: 'topic',
+    name: 'Calligraphie',
+    slug: 'calligraphie',
+    description: 'Art de la belle écriture et du lettrage.',
+    createdAt: '2025-03-20T10:00:00.000Z',
+  },
+  {
+    _id: 'topic-10',
+    type: 'topic',
+    name: 'Sculpture',
+    slug: 'sculpture',
+    description: 'Modelage, gravure et formes en 3D.',
+    createdAt: '2025-03-25T10:00:00.000Z',
+  },
+  {
+    _id: 'topic-11',
+    type: 'topic',
+    name: 'Street Art',
+    slug: 'street-art',
+    description: 'Graffiti, murales et art urbain.',
+    createdAt: '2025-04-01T10:00:00.000Z',
+  },
 ];
