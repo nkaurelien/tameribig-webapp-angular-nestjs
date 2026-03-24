@@ -205,7 +205,7 @@ import { MOCK_TOPICS } from '../../shared/data/mock-topics';
           <img
             src="images/masque-afrique.jpg"
             alt=""
-            class="w-40 h-auto object-contain opacity-60 mb-6"
+            class="w-40 h-auto object-contain opacity-70 mb-6"
           />
           <h2 class="text-xl font-semibold text-gray-900 mb-2">
             Aucune catégorie
