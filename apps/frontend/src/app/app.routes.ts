@@ -29,8 +29,14 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/home/home.routes').then((m) => m.HOME_ROUTES),
       },
-      // P2+ routes — placeholders for future migration
-      // { path: 'explorer', loadChildren: () => import('./features/explorer/explorer.routes').then(m => m.EXPLORER_ROUTES) },
+      // P2+ routes
+      {
+        path: 'explorer',
+        loadChildren: () =>
+          import('./features/explorer/explorer.routes').then(
+            (m) => m.EXPLORER_ROUTES,
+          ),
+      },
       // { path: 'search', loadChildren: () => import('./features/search/search.routes').then(m => m.SEARCH_ROUTES) },
       // { path: 'topics', loadChildren: () => import('./features/topics/topics.routes').then(m => m.TOPICS_ROUTES) },
       // { path: 'console', loadChildren: () => import('./features/console/console.routes').then(m => m.CONSOLE_ROUTES) },
