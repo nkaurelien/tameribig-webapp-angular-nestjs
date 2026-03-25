@@ -4,6 +4,6 @@ export const environment = {
   supertokens: {
     appName: 'Tameri',
     apiDomain: '',
-    apiBasePath: '/auth',
+    apiBasePath: '/api/auth',
   },
 };

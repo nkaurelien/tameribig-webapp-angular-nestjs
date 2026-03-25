@@ -24,12 +24,12 @@ export const routes: Routes = [
         (m) => m.MainLayoutComponent,
       ),
     children: [
+      // Routes publiques
       {
         path: 'home',
         loadChildren: () =>
           import('./features/home/home.routes').then((m) => m.HOME_ROUTES),
       },
-      // P2+ routes
       {
         path: 'explorer',
         loadChildren: () =>
@@ -51,7 +51,8 @@ export const routes: Routes = [
             (m) => m.TOPICS_ROUTES,
           ),
       },
-      // { path: 'console', loadChildren: () => import('./features/console/console.routes').then(m => m.CONSOLE_ROUTES) },
+      // Routes protégées
+      // { path: 'console', canActivate: [authGuard], loadChildren: () => import('./features/console/console.routes').then(m => m.CONSOLE_ROUTES) },
       // { path: 'coorporate', loadChildren: () => import('./features/coorporate/coorporate.routes').then(m => m.COORPORATE_ROUTES) },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
