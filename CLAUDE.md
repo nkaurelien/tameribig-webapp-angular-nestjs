@@ -192,17 +192,17 @@ The original frontend is at `../tameribig-webapp-angular/` (Angular 8.2.14, 114 
 
 ### Frontend Stack (new)
 
-| Component | Technology                             | Replaces (from tameribig-webapp-angular) |
-| --------- | -------------------------------------- | ---------------------------------------- |
-| Framework | Angular 19+ (standalone components)    | Angular 8 (NgModules)                    |
-| State     | Angular Signals + NgRx Signal Store    | Akita + NgRx 7 (mixed)                   |
-| Styling   | Tailwind CSS 4 + Angular CDK           | MDB UIKit Pro + Material + jQuery        |
-| Auth      | SuperTokens (HttpClient + interceptor) | Firebase Auth + @angular/fire            |
-| Storage   | MinIO via backend API                  | Cloudinary + Firebase Storage            |
-| i18n      | @ngx-translate or Angular built-in     | @ngx-translate 11                        |
-| Build     | esbuild (Angular CLI)                  | Webpack                                  |
-| Tests     | Jest or Vitest                         | Karma + Jasmine                          |
-| Linting   | ESLint 9                               | TSLint                                   |
+| Component | Technology                               | Replaces (from tameribig-webapp-angular) |
+| --------- | ---------------------------------------- | ---------------------------------------- |
+| Framework | Angular 19+ (standalone components)      | Angular 8 (NgModules)                    |
+| State     | Angular Signals + NgRx Signal Store      | Akita + NgRx 7 (mixed)                   |
+| Styling   | Tailwind CSS 4 + DaisyUI 5 + Angular CDK | MDB UIKit Pro + Material + jQuery        |
+| Auth      | SuperTokens (HttpClient + interceptor)   | Firebase Auth + @angular/fire            |
+| Storage   | MinIO via backend API                    | Cloudinary + Firebase Storage            |
+| i18n      | @ngx-translate or Angular built-in       | @ngx-translate 11                        |
+| Build     | esbuild (Angular CLI)                    | Webpack                                  |
+| Tests     | Jest or Vitest                           | Karma + Jasmine                          |
+| Linting   | ESLint 9                                 | TSLint                                   |
 
 ### Modules to Migrate (priority order)
 
