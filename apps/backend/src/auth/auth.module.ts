@@ -21,6 +21,23 @@ import { SuperTokensBaseConfig } from './supertokens.config.js';
             signUpFeature: {
               formFields: [{ id: 'fullname' }],
             },
+            emailDelivery: {
+              override: (originalImplementation) => ({
+                ...originalImplementation,
+                sendEmail: async (input) => {
+                  if (input.type === 'PASSWORD_RESET') {
+                    return originalImplementation.sendEmail({
+                      ...input,
+                      passwordResetLink: input.passwordResetLink.replace(
+                        '/reset-password',
+                        '/auth/reset-password',
+                      ),
+                    });
+                  }
+                  return originalImplementation.sendEmail(input);
+                },
+              }),
+            },
             override: {
               apis: (originalImplementation) => ({
                 ...originalImplementation,
@@ -28,7 +45,6 @@ import { SuperTokensBaseConfig } from './supertokens.config.js';
                   if (!originalImplementation.signUpPOST) {
                     throw new Error('signUpPOST not defined');
                   }
-                  // console.log('[signUpPOST] formFields:', JSON.stringify(input.formFields, null, 2));
 
                   const response =
                     await originalImplementation.signUpPOST(input);

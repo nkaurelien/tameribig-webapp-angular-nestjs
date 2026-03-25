@@ -1,5 +1,39 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: tameri --default, dark;
+}
+
+@plugin "daisyui/theme" {
+  name: "tameri";
+  default: true;
+  color-scheme: light;
+  --color-base-100: oklch(100% 0 0);
+  --color-base-200: oklch(96.7% 0.001 286.375);
+  --color-base-300: oklch(92.4% 0.003 264.542);
+  --color-base-content: oklch(21% 0.006 285.885);
+  --color-primary: oklch(58.5% 0.233 277.117);
+  --color-primary-content: oklch(100% 0 0);
+  --color-secondary: oklch(65.7% 0.199 298.082);
+  --color-secondary-content: oklch(100% 0 0);
+  --color-accent: oklch(76.9% 0.188 70.08);
+  --color-accent-content: oklch(21% 0.006 285.885);
+  --color-neutral: oklch(32.1% 0.02 255.701);
+  --color-neutral-content: oklch(94.6% 0.001 286.375);
+  --color-info: oklch(62.3% 0.214 259.815);
+  --color-info-content: oklch(100% 0 0);
+  --color-success: oklch(64.8% 0.15 160);
+  --color-success-content: oklch(100% 0 0);
+  --color-warning: oklch(75% 0.183 55.934);
+  --color-warning-content: oklch(21% 0.006 285.885);
+  --color-error: oklch(63.7% 0.237 25.331);
+  --color-error-content: oklch(100% 0 0);
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.75rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+}
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -7,6 +41,14 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Override DaisyUI default focus color (base-content/black) to use primary */
+.input:focus,
+.input:focus-within,
+.select:focus,
+.textarea:focus {
+  --input-color: var(--color-primary);
 }
 
 .diamond {

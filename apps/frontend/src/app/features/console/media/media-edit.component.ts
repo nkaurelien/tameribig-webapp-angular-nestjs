@@ -23,10 +23,7 @@ import { Topic } from '../../../shared/models/topic.model';
     <div>
       <!-- Header -->
       <div class="flex items-center gap-3 mb-6">
-        <a
-          routerLink="/console/media"
-          class="text-gray-400 hover:text-gray-600 transition-colors no-underline"
-        >
+        <a routerLink="/console/media" class="btn btn-ghost btn-sm btn-circle">
           <svg
             class="w-5 h-5"
             fill="none"
@@ -42,9 +39,9 @@ import { Topic } from '../../../shared/models/topic.model';
           </svg>
         </a>
         <div>
-          <h1 class="text-xl font-bold text-gray-900">Modifier le média</h1>
+          <h1 class="text-xl font-bold">Modifier le média</h1>
           @if (currentMedia()) {
-            <p class="text-sm text-gray-500 mt-0.5 truncate max-w-xs">
+            <p class="text-sm text-base-content/60 truncate max-w-xs">
               {{ currentMedia()!.title }}
             </p>
           }
@@ -53,154 +50,158 @@ import { Topic } from '../../../shared/models/topic.model';
 
       @if (loading()) {
         <div class="flex justify-center py-12">
-          <div
-            class="w-8 h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"
-          ></div>
+          <span class="loading loading-spinner loading-lg text-primary"></span>
         </div>
       } @else {
         @if (errorMessage()) {
-          <div
-            class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg mb-6"
-          >
-            {{ errorMessage() }}
+          <div role="alert" class="alert alert-error mb-6">
+            <span>{{ errorMessage() }}</span>
           </div>
         }
 
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
           <!-- Metadata -->
-          <div class="bg-white border border-gray-200 rounded-xl p-6">
-            <h2 class="text-base font-semibold text-gray-900 mb-4">
-              Informations
-            </h2>
-            <div class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1.5"
-                  >Titre <span class="text-red-500">*</span></label
-                >
-                <input
-                  formControlName="title"
-                  type="text"
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
-                />
-              </div>
+          <div class="card bg-base-100 border border-base-300">
+            <div class="card-body">
+              <h2 class="card-title text-base">Informations</h2>
+              <div class="space-y-4">
+                <div class="form-control w-full">
+                  <label class="label">
+                    <span class="label-text"
+                      >Titre <span class="text-error">*</span></span
+                    >
+                  </label>
+                  <input
+                    formControlName="title"
+                    type="text"
+                    class="input input-bordered w-full"
+                    [class.input-error]="
+                      form.get('title')?.invalid && form.get('title')?.touched
+                    "
+                  />
+                </div>
 
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1.5"
-                  >Description</label
-                >
-                <textarea
-                  formControlName="description"
-                  rows="3"
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors resize-none"
-                ></textarea>
-              </div>
+                <div class="form-control w-full">
+                  <label class="label">
+                    <span class="label-text">Description</span>
+                  </label>
+                  <textarea
+                    formControlName="description"
+                    rows="3"
+                    class="textarea textarea-bordered w-full"
+                  ></textarea>
+                </div>
 
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1.5"
-                  >Mots-clés</label
-                >
-                <input
-                  formControlName="keywords"
-                  type="text"
-                  placeholder="mot1, mot2, mot3"
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
-                />
-                <p class="text-xs text-gray-400 mt-1">
-                  Séparés par des virgules
-                </p>
-              </div>
+                <div class="form-control w-full">
+                  <label class="label">
+                    <span class="label-text">Mots-clés</span>
+                  </label>
+                  <input
+                    formControlName="keywords"
+                    type="text"
+                    placeholder="mot1, mot2, mot3"
+                    class="input input-bordered w-full"
+                  />
+                  <label class="label">
+                    <span class="label-text-alt text-base-content/50"
+                      >Séparés par des virgules</span
+                    >
+                  </label>
+                </div>
 
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1.5"
-                  >Prix (FCFA)</label
-                >
-                <input
-                  formControlName="price"
-                  type="number"
-                  min="0"
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
-                />
+                <div class="form-control w-full">
+                  <label class="label">
+                    <span class="label-text">Prix (FCFA)</span>
+                  </label>
+                  <input
+                    formControlName="price"
+                    type="number"
+                    min="0"
+                    class="input input-bordered w-full"
+                  />
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Topics -->
           @if (topics().length > 0) {
-            <div class="bg-white border border-gray-200 rounded-xl p-6">
-              <h2 class="text-base font-semibold text-gray-900 mb-4">
-                Catégories
-              </h2>
-              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                @for (topic of topics(); track topic._id) {
-                  <label class="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      [checked]="isTopicSelected(topic._id!)"
-                      (change)="toggleTopic(topic._id!)"
-                      class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-                    />
-                    <span class="text-sm text-gray-700">{{ topic.name }}</span>
-                  </label>
-                }
+            <div class="card bg-base-100 border border-base-300">
+              <div class="card-body">
+                <h2 class="card-title text-base">Catégories</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  @for (topic of topics(); track topic._id) {
+                    <label class="label cursor-pointer justify-start gap-3">
+                      <input
+                        type="checkbox"
+                        [checked]="isTopicSelected(topic._id!)"
+                        (change)="toggleTopic(topic._id!)"
+                        class="checkbox checkbox-primary checkbox-sm"
+                      />
+                      <span class="label-text">{{ topic.name }}</span>
+                    </label>
+                  }
+                </div>
               </div>
             </div>
           }
 
-          <!-- Actions -->
-          <div class="bg-white border border-gray-200 rounded-xl p-6">
-            <h2 class="text-base font-semibold text-gray-900 mb-4">
-              Publication
-            </h2>
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-sm text-gray-700">
-                  Statut actuel :
-                  <span
-                    [class]="statusBadgeClass()"
-                    class="ml-1 px-2 py-0.5 rounded text-xs font-medium"
-                  >
+          <!-- Publication -->
+          <div class="card bg-base-100 border border-base-300">
+            <div class="card-body">
+              <h2 class="card-title text-base">Publication</h2>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm">Statut actuel :</span>
+                  <span class="badge badge-sm" [class]="statusBadgeClass()">
                     {{ statusLabel() }}
                   </span>
-                </p>
-              </div>
-              <div class="flex gap-2">
-                @if (currentMedia()?.status === MediaStatus.Draft) {
-                  <button
-                    type="button"
-                    (click)="publish()"
-                    [disabled]="publishing()"
-                    class="bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-                  >
-                    {{ publishing() ? '...' : 'Publier' }}
-                  </button>
-                } @else if (currentMedia()?.status === MediaStatus.Published) {
-                  <button
-                    type="button"
-                    (click)="unpublish()"
-                    [disabled]="publishing()"
-                    class="bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-                  >
-                    {{ publishing() ? '...' : 'Dépublier' }}
-                  </button>
-                }
+                </div>
+                <div class="flex gap-2">
+                  @if (currentMedia()?.status === MediaStatus.Draft) {
+                    <button
+                      type="button"
+                      (click)="publish()"
+                      [disabled]="publishing()"
+                      class="btn btn-success btn-sm"
+                    >
+                      @if (publishing()) {
+                        <span class="loading loading-spinner loading-xs"></span>
+                      }
+                      Publier
+                    </button>
+                  } @else if (
+                    currentMedia()?.status === MediaStatus.Published
+                  ) {
+                    <button
+                      type="button"
+                      (click)="unpublish()"
+                      [disabled]="publishing()"
+                      class="btn btn-warning btn-sm"
+                    >
+                      @if (publishing()) {
+                        <span class="loading loading-spinner loading-xs"></span>
+                      }
+                      Dépublier
+                    </button>
+                  }
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Submit -->
           <div class="flex items-center justify-end gap-3">
-            <a
-              routerLink="/console/media"
-              class="px-4 py-2.5 text-sm text-gray-600 hover:text-gray-900 font-medium no-underline transition-colors"
-            >
-              Annuler
-            </a>
+            <a routerLink="/console/media" class="btn btn-ghost"> Annuler </a>
             <button
               type="submit"
               [disabled]="saving() || form.invalid"
-              class="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-medium px-6 py-2.5 rounded-lg text-sm transition-colors"
+              class="btn btn-primary"
             >
-              {{ saving() ? 'Enregistrement...' : 'Enregistrer' }}
+              @if (saving()) {
+                <span class="loading loading-spinner loading-sm"></span>
+              }
+              Enregistrer
             </button>
           </div>
         </form>
@@ -337,10 +338,10 @@ export class MediaEditComponent implements OnInit {
     const m = this.currentMedia();
     if (!m) return '';
     const classes: Record<string, string> = {
-      [MediaStatus.Draft]: 'bg-gray-100 text-gray-600',
-      [MediaStatus.Published]: 'bg-green-100 text-green-700',
-      [MediaStatus.Archived]: 'bg-yellow-100 text-yellow-700',
+      [MediaStatus.Draft]: 'badge-ghost',
+      [MediaStatus.Published]: 'badge-success',
+      [MediaStatus.Archived]: 'badge-warning',
     };
-    return classes[m.status] ?? 'bg-gray-100 text-gray-600';
+    return classes[m.status] ?? 'badge-ghost';
   }
 }

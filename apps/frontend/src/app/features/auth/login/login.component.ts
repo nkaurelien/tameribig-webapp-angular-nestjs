@@ -10,26 +10,22 @@ import { AuthStore } from '../../../store/auth.store';
   imports: [FormsModule, RouterLink],
   template: `
     <div>
-      <h1 class="text-2xl font-bold text-gray-900 text-center">Bon retour !</h1>
-      <p class="text-gray-500 text-sm text-center mt-1 mb-8">
+      <h1 class="text-2xl font-bold text-center">Bon retour !</h1>
+      <p class="text-base-content/60 text-sm text-center mt-1 mb-8">
         Connectez-vous à votre compte
       </p>
 
       @if (errorMessage()) {
-        <div
-          class="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg mb-6"
-        >
-          {{ errorMessage() }}
+        <div role="alert" class="alert alert-error mb-6">
+          <span>{{ errorMessage() }}</span>
         </div>
       }
 
       <form (ngSubmit)="onSubmit()">
-        <div class="mb-5">
-          <label
-            for="email"
-            class="block text-sm font-medium text-gray-700 mb-1.5"
-            >Adresse email</label
-          >
+        <div class="form-control w-full mb-5">
+          <label class="label" for="email">
+            <span class="label-text">Adresse email</span>
+          </label>
           <input
             id="email"
             type="email"
@@ -37,20 +33,18 @@ import { AuthStore } from '../../../store/auth.store';
             name="email"
             required
             placeholder="vous@exemple.com"
-            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+            class="input input-bordered w-full"
           />
         </div>
 
-        <div class="mb-5">
-          <div class="flex justify-between items-center mb-1.5">
-            <label
-              for="password"
-              class="block text-sm font-medium text-gray-700"
-              >Mot de passe</label
-            >
+        <div class="form-control w-full mb-5">
+          <div class="flex justify-between items-center">
+            <label class="label" for="password">
+              <span class="label-text">Mot de passe</span>
+            </label>
             <a
               routerLink="/auth/forgot-password"
-              class="text-xs text-indigo-600 hover:text-indigo-800 no-underline"
+              class="link link-primary text-xs"
               >Oublié ?</a
             >
           </div>
@@ -62,12 +56,12 @@ import { AuthStore } from '../../../store/auth.store';
               name="password"
               required
               placeholder="Votre mot de passe"
-              class="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+              class="input input-bordered w-full pr-10"
             />
             <button
               type="button"
               (click)="showPassword.set(!showPassword())"
-              class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+              class="absolute inset-y-0 right-0 flex items-center pr-3 text-base-content/40 hover:text-base-content/70"
               [attr.aria-label]="
                 showPassword()
                   ? 'Masquer le mot de passe'
@@ -113,33 +107,31 @@ import { AuthStore } from '../../../store/auth.store';
           </div>
         </div>
 
-        <div class="flex items-center mb-6">
+        <label class="label cursor-pointer justify-start gap-3 mb-6">
           <input
-            id="remember"
             type="checkbox"
             [(ngModel)]="rememberMe"
             name="remember"
-            class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+            class="checkbox checkbox-primary checkbox-sm"
           />
-          <label for="remember" class="ml-2 text-sm text-gray-600"
-            >Se souvenir de moi</label
-          >
-        </div>
+          <span class="label-text">Se souvenir de moi</span>
+        </label>
 
         <button
           type="submit"
           [disabled]="loading()"
-          class="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-medium py-2.5 rounded-lg text-sm transition-colors"
+          class="btn btn-primary w-full"
         >
+          @if (loading()) {
+            <span class="loading loading-spinner loading-sm"></span>
+          }
           {{ loading() ? 'Connexion...' : 'Se connecter' }}
         </button>
       </form>
 
-      <p class="text-center text-sm text-gray-500 mt-6">
+      <p class="text-center text-sm text-base-content/60 mt-6">
         Pas encore de compte ?
-        <a
-          routerLink="/auth/register"
-          class="text-indigo-600 font-medium hover:text-indigo-800 no-underline"
+        <a routerLink="/auth/register" class="link link-primary font-medium"
           >Créer un compte</a
         >
       </p>
