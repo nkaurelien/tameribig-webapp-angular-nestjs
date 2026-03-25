@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
   {
@@ -52,7 +53,14 @@ export const routes: Routes = [
           ),
       },
       // Routes protégées
-      // { path: 'console', canActivate: [authGuard], loadChildren: () => import('./features/console/console.routes').then(m => m.CONSOLE_ROUTES) },
+      {
+        path: 'console',
+        canActivate: [authGuard],
+        loadChildren: () =>
+          import('./features/console/console.routes').then(
+            (m) => m.CONSOLE_ROUTES,
+          ),
+      },
       // { path: 'coorporate', loadChildren: () => import('./features/coorporate/coorporate.routes').then(m => m.COORPORATE_ROUTES) },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],

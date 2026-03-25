@@ -400,3 +400,5 @@ dist
 .serverless/**/*.zip
 
 .secrets/*
+# Legacy project symlink (machine-specific path)
+apps/legacy

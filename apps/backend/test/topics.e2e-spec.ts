@@ -9,7 +9,7 @@ import { DatabaseModule } from '../src/database/database.module';
 
 describe('TopicsController (e2e)', () => {
   let app: INestApplication<App>;
-  let topicsService: TopicsService;
+  let topicsService: TopicsService; // eslint-disable-line @typescript-eslint/no-unused-vars
 
   const mockDb = {
     insert: jest.fn(),

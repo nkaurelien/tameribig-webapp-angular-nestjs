@@ -83,10 +83,9 @@ export class SeederService implements OnApplicationBootstrap {
             `SuperTokens signup failed for ${demoUser.email}: ${signUpResult.status}`,
           );
         }
-      } catch (e) {
-        this.logger.warn(
-          `Failed to create user "${demoUser.email}": ${e.message}`,
-        );
+      } catch (e: unknown) {
+        const msg = e instanceof Error ? e.message : 'unknown error';
+        this.logger.warn(`Failed to create user "${demoUser.email}": ${msg}`);
       }
     }
     this.logger.log(`Users: seeded ${inserted} items.`);
@@ -106,10 +105,9 @@ export class SeederService implements OnApplicationBootstrap {
       try {
         await db.insert(topic as any);
         inserted++;
-      } catch (e) {
-        this.logger.warn(
-          `Failed to insert topic "${topic.name}": ${e.message}`,
-        );
+      } catch (e: unknown) {
+        const msg = e instanceof Error ? e.message : 'unknown error';
+        this.logger.warn(`Failed to insert topic "${topic.name}": ${msg}`);
       }
     }
     this.logger.log(`Topics: seeded ${inserted} items.`);
@@ -129,10 +127,9 @@ export class SeederService implements OnApplicationBootstrap {
       try {
         await db.insert(media as any);
         inserted++;
-      } catch (e) {
-        this.logger.warn(
-          `Failed to insert media "${media.title}": ${e.message}`,
-        );
+      } catch (e: unknown) {
+        const msg = e instanceof Error ? e.message : 'unknown error';
+        this.logger.warn(`Failed to insert media "${media.title}": ${msg}`);
       }
     }
     this.logger.log(`Media: seeded ${inserted} items.`);
@@ -153,9 +150,10 @@ export class SeederService implements OnApplicationBootstrap {
       try {
         await db.insert(suggestion as any);
         inserted++;
-      } catch (e) {
+      } catch (e: unknown) {
+        const msg = e instanceof Error ? e.message : 'unknown error';
         this.logger.warn(
-          `Failed to insert suggestion "${suggestion.search}": ${e.message}`,
+          `Failed to insert suggestion "${suggestion.search}": ${msg}`,
         );
       }
     }

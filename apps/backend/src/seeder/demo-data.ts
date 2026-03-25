@@ -259,7 +259,7 @@ export const DEMO_SEARCH_SUGGESTIONS: Omit<SearchSuggestion, '_id' | '_rev'>[] =
     'calligraphie',
     'digital art',
     'nature',
-  ].map((search, i) => ({
+  ].map((search) => ({
     type: 'search_suggestion' as const,
     search,
     searchType: SearchSuggestionType.Text,
