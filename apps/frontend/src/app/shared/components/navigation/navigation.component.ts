@@ -8,183 +8,199 @@ import { AuthStore } from '../../../store/auth.store';
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive],
   template: `
-    <header class="sticky top-0 z-50 w-full bg-white border-b border-gray-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <!-- Logo -->
+    <header
+      class="navbar sticky top-0 z-50 bg-base-100 border-b border-base-300 px-4 sm:px-6 lg:px-8"
+    >
+      <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
+        <!-- Logo + Nav links grouped left -->
+        <div class="flex items-center gap-1">
           <a
             routerLink="/home"
-            class="flex items-center gap-2 no-underline shrink-0"
+            class="flex items-center gap-2 no-underline shrink-0 mr-4"
           >
             <img
               src="images/tameri-logo1.png"
               alt="Tameri"
               class="w-8 h-8 rounded-full"
             />
-            <span class="text-gray-900 font-semibold text-lg hidden sm:block"
-              >Tameri</span
-            >
+            <span class="font-semibold text-lg hidden sm:block">Tameri</span>
           </a>
 
           <!-- Desktop nav links -->
           <nav class="hidden md:flex items-center gap-1">
             <a
               routerLink="/home"
-              routerLinkActive="!text-indigo-600 !bg-indigo-50"
+              routerLinkActive="!text-primary !bg-primary/10"
               [routerLinkActiveOptions]="{ exact: true }"
-              class="text-gray-600 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-lg text-sm font-medium transition-colors no-underline"
+              class="btn btn-ghost btn-sm text-base-content/70 font-medium no-underline"
             >
               Accueil
             </a>
             <a
               routerLink="/explorer"
-              routerLinkActive="!text-indigo-600 !bg-indigo-50"
-              class="text-gray-600 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-lg text-sm font-medium transition-colors no-underline"
+              routerLinkActive="!text-primary !bg-primary/10"
+              class="btn btn-ghost btn-sm text-base-content/70 font-medium no-underline"
             >
               Explorer
             </a>
             <a
               routerLink="/search"
-              routerLinkActive="!text-indigo-600 !bg-indigo-50"
-              class="text-gray-600 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-lg text-sm font-medium transition-colors no-underline"
+              routerLinkActive="!text-primary !bg-primary/10"
+              class="btn btn-ghost btn-sm text-base-content/70 font-medium no-underline"
             >
               Recherche
             </a>
             <a
               routerLink="/topics"
-              routerLinkActive="!text-indigo-600 !bg-indigo-50"
-              class="text-gray-600 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-lg text-sm font-medium transition-colors no-underline"
+              routerLinkActive="!text-primary !bg-primary/10"
+              class="btn btn-ghost btn-sm text-base-content/70 font-medium no-underline"
             >
               Catégories
             </a>
           </nav>
+        </div>
 
-          <!-- Desktop actions -->
-          <div class="hidden md:flex items-center gap-3">
-            @if (authStore.isAuthenticated()) {
-              <a
-                routerLink="/console"
-                class="text-gray-600 hover:text-gray-900 text-sm font-medium no-underline transition-colors"
-                >Mon espace</a
-              >
-              <a
-                routerLink="/auth/logout"
-                class="text-gray-400 hover:text-gray-600 text-sm no-underline transition-colors"
-                >Déconnexion</a
-              >
-            } @else {
-              <a
-                routerLink="/auth/login"
-                class="text-gray-600 hover:text-gray-900 text-sm font-medium no-underline transition-colors"
-                >Connexion</a
-              >
-              <a
-                routerLink="/auth/register"
-                class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-lg no-underline transition-colors"
-                >S'inscrire</a
-              >
-            }
-          </div>
+        <!-- Desktop actions -->
+        <div class="hidden md:flex items-center gap-2">
+          @if (authStore.isAuthenticated()) {
+            <a
+              routerLink="/console"
+              routerLinkActive="!text-primary"
+              class="btn btn-ghost btn-sm font-medium no-underline"
+              >Mon espace</a
+            >
+            <a
+              routerLink="/console/media"
+              routerLinkActive="!text-primary"
+              class="btn btn-ghost btn-sm font-medium no-underline"
+              >Mes médias</a
+            >
+            <a
+              routerLink="/auth/logout"
+              class="btn btn-ghost btn-sm text-base-content/40 no-underline"
+              >Déconnexion</a
+            >
+          } @else {
+            <a
+              routerLink="/auth/login"
+              class="btn btn-ghost btn-sm font-medium no-underline"
+              >Connexion</a
+            >
+            <a
+              routerLink="/auth/register"
+              class="btn btn-primary btn-sm no-underline"
+              >S'inscrire</a
+            >
+          }
+        </div>
 
-          <!-- Mobile burger -->
-          <button
-            (click)="mobileOpen.set(!mobileOpen())"
-            class="md:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
+        <!-- Mobile burger -->
+        <button
+          (click)="mobileOpen.set(!mobileOpen())"
+          class="btn btn-ghost btn-square btn-sm md:hidden"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
           >
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              @if (mobileOpen()) {
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              } @else {
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              }
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Mobile menu -->
-      @if (mobileOpen()) {
-        <div class="md:hidden border-t border-gray-200 bg-white">
-          <nav class="px-4 py-3 flex flex-col gap-1">
-            <a
-              routerLink="/home"
-              (click)="mobileOpen.set(false)"
-              class="text-gray-700 hover:bg-gray-50 px-3 py-2.5 rounded-lg text-sm font-medium no-underline transition-colors"
-            >
-              Accueil
-            </a>
-            <a
-              routerLink="/explorer"
-              (click)="mobileOpen.set(false)"
-              class="text-gray-700 hover:bg-gray-50 px-3 py-2.5 rounded-lg text-sm font-medium no-underline transition-colors"
-            >
-              Explorer
-            </a>
-            <a
-              routerLink="/search"
-              (click)="mobileOpen.set(false)"
-              class="text-gray-700 hover:bg-gray-50 px-3 py-2.5 rounded-lg text-sm font-medium no-underline transition-colors"
-            >
-              Recherche
-            </a>
-            <a
-              routerLink="/topics"
-              (click)="mobileOpen.set(false)"
-              class="text-gray-700 hover:bg-gray-50 px-3 py-2.5 rounded-lg text-sm font-medium no-underline transition-colors"
-            >
-              Catégories
-            </a>
-            <div class="border-t border-gray-100 my-2"></div>
-            @if (authStore.isAuthenticated()) {
-              <a
-                routerLink="/console"
-                (click)="mobileOpen.set(false)"
-                class="text-gray-700 hover:bg-gray-50 px-3 py-2.5 rounded-lg text-sm font-medium no-underline transition-colors"
-              >
-                Mon espace
-              </a>
-              <a
-                routerLink="/auth/logout"
-                (click)="mobileOpen.set(false)"
-                class="text-gray-700 hover:bg-gray-50 px-3 py-2.5 rounded-lg text-sm font-medium no-underline transition-colors"
-              >
-                Déconnexion
-              </a>
+            @if (mobileOpen()) {
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
             } @else {
-              <a
-                routerLink="/auth/login"
-                (click)="mobileOpen.set(false)"
-                class="text-gray-700 hover:bg-gray-50 px-3 py-2.5 rounded-lg text-sm font-medium no-underline transition-colors"
-              >
-                Connexion
-              </a>
-              <a
-                routerLink="/auth/register"
-                (click)="mobileOpen.set(false)"
-                class="bg-indigo-600 hover:bg-indigo-700 text-white text-center px-3 py-2.5 rounded-lg text-sm font-medium no-underline transition-colors mt-1"
-              >
-                S'inscrire
-              </a>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             }
-          </nav>
-        </div>
-      }
+          </svg>
+        </button>
+      </div>
     </header>
+
+    <!-- Mobile menu -->
+    @if (mobileOpen()) {
+      <div
+        class="md:hidden border-t border-base-300 bg-base-100 sticky top-16 z-40"
+      >
+        <nav class="px-4 py-3 flex flex-col gap-1">
+          <a
+            routerLink="/home"
+            (click)="mobileOpen.set(false)"
+            class="btn btn-ghost btn-sm justify-start font-medium no-underline"
+          >
+            Accueil
+          </a>
+          <a
+            routerLink="/explorer"
+            (click)="mobileOpen.set(false)"
+            class="btn btn-ghost btn-sm justify-start font-medium no-underline"
+          >
+            Explorer
+          </a>
+          <a
+            routerLink="/search"
+            (click)="mobileOpen.set(false)"
+            class="btn btn-ghost btn-sm justify-start font-medium no-underline"
+          >
+            Recherche
+          </a>
+          <a
+            routerLink="/topics"
+            (click)="mobileOpen.set(false)"
+            class="btn btn-ghost btn-sm justify-start font-medium no-underline"
+          >
+            Catégories
+          </a>
+          <div class="divider my-1"></div>
+          @if (authStore.isAuthenticated()) {
+            <a
+              routerLink="/console"
+              (click)="mobileOpen.set(false)"
+              class="btn btn-ghost btn-sm justify-start font-medium no-underline"
+            >
+              Mon espace
+            </a>
+            <a
+              routerLink="/console/media"
+              (click)="mobileOpen.set(false)"
+              class="btn btn-ghost btn-sm justify-start font-medium no-underline"
+            >
+              Mes médias
+            </a>
+            <a
+              routerLink="/auth/logout"
+              (click)="mobileOpen.set(false)"
+              class="btn btn-ghost btn-sm justify-start font-medium no-underline"
+            >
+              Déconnexion
+            </a>
+          } @else {
+            <a
+              routerLink="/auth/login"
+              (click)="mobileOpen.set(false)"
+              class="btn btn-ghost btn-sm justify-start font-medium no-underline"
+            >
+              Connexion
+            </a>
+            <a
+              routerLink="/auth/register"
+              (click)="mobileOpen.set(false)"
+              class="btn btn-primary btn-sm justify-start no-underline mt-1"
+            >
+              S'inscrire
+            </a>
+          }
+        </nav>
+      </div>
+    }
   `,
 })
 export class NavigationComponent {

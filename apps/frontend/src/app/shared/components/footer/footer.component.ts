@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [RouterLink],
   template: `
-    <footer class="bg-gray-50 border-t border-gray-200">
+    <footer class="bg-base-200 border-t border-base-300">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
           <div class="col-span-2 md:col-span-1">
@@ -19,131 +19,118 @@ import { RouterLink } from '@angular/router';
                 alt="Tameri"
                 class="w-7 h-7 rounded-full"
               />
-              <span class="text-gray-900 font-semibold">Tameri</span>
+              <span class="font-semibold">Tameri</span>
             </a>
-            <p class="text-sm text-gray-500 leading-relaxed">
+            <p class="text-sm text-base-content/50 leading-relaxed">
               Plateforme de partage de médias créatifs.
             </p>
           </div>
           <div>
-            <h4
-              class="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-4"
-            >
+            <h4 class="footer-title text-xs uppercase tracking-wider">
               Navigation
             </h4>
             <ul class="space-y-2.5 list-none p-0 m-0">
               <li>
                 <a
                   routerLink="/home"
-                  class="text-sm text-gray-500 hover:text-indigo-600 no-underline transition-colors"
+                  class="link link-hover text-sm no-underline"
                   >Accueil</a
                 >
               </li>
               <li>
                 <a
                   routerLink="/explorer"
-                  class="text-sm text-gray-500 hover:text-indigo-600 no-underline transition-colors"
+                  class="link link-hover text-sm no-underline"
                   >Explorer</a
                 >
               </li>
               <li>
                 <a
                   routerLink="/search"
-                  class="text-sm text-gray-500 hover:text-indigo-600 no-underline transition-colors"
+                  class="link link-hover text-sm no-underline"
                   >Recherche</a
                 >
               </li>
               <li>
                 <a
                   routerLink="/topics"
-                  class="text-sm text-gray-500 hover:text-indigo-600 no-underline transition-colors"
+                  class="link link-hover text-sm no-underline"
                   >Catégories</a
                 >
               </li>
             </ul>
           </div>
           <div>
-            <h4
-              class="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-4"
-            >
-              Infos
-            </h4>
+            <h4 class="footer-title text-xs uppercase tracking-wider">Infos</h4>
             <ul class="space-y-2.5 list-none p-0 m-0">
               <li>
                 <a
-                  routerLink="/coorporate/about"
-                  class="text-sm text-gray-500 hover:text-indigo-600 no-underline transition-colors"
+                  routerLink="/info/about"
+                  class="link link-hover text-sm no-underline"
                   >À propos</a
                 >
               </li>
               <li>
                 <a
-                  routerLink="/coorporate/contact"
-                  class="text-sm text-gray-500 hover:text-indigo-600 no-underline transition-colors"
+                  routerLink="/info/contact"
+                  class="link link-hover text-sm no-underline"
                   >Contact</a
                 >
               </li>
               <li>
                 <a
-                  routerLink="/coorporate/faq"
-                  class="text-sm text-gray-500 hover:text-indigo-600 no-underline transition-colors"
+                  routerLink="/info/faq"
+                  class="link link-hover text-sm no-underline"
                   >FAQ</a
                 >
               </li>
             </ul>
           </div>
           <div>
-            <h4
-              class="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-4"
-            >
+            <h4 class="footer-title text-xs uppercase tracking-wider">
               Compte
             </h4>
             <ul class="space-y-2.5 list-none p-0 m-0">
               <li>
                 <a
                   routerLink="/auth/login"
-                  class="text-sm text-gray-500 hover:text-indigo-600 no-underline transition-colors"
+                  class="link link-hover text-sm no-underline"
                   >Connexion</a
                 >
               </li>
               <li>
                 <a
                   routerLink="/auth/register"
-                  class="text-sm text-gray-500 hover:text-indigo-600 no-underline transition-colors"
+                  class="link link-hover text-sm no-underline"
                   >Inscription</a
                 >
               </li>
             </ul>
           </div>
           <div>
-            <h4
-              class="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-4"
-            >
-              Légal
-            </h4>
+            <h4 class="footer-title text-xs uppercase tracking-wider">Légal</h4>
             <ul class="space-y-2.5 list-none p-0 m-0">
               <li>
                 <a
-                  routerLink="/coorporate/privacy"
-                  class="text-sm text-gray-500 hover:text-indigo-600 no-underline transition-colors"
+                  routerLink="/info/privacy"
+                  class="link link-hover text-sm no-underline"
                   >Confidentialité</a
                 >
               </li>
               <li>
                 <a
-                  href="#"
-                  class="text-sm text-gray-500 hover:text-indigo-600 no-underline transition-colors"
+                  routerLink="/info/terms"
+                  class="link link-hover text-sm no-underline"
                   >CGU</a
                 >
               </li>
             </ul>
           </div>
         </div>
-        <div class="border-t border-gray-200 mt-10 pt-6 text-center">
-          <p class="text-xs text-gray-400">
-            &copy; {{ currentYear }} Tameri. Tous droits réservés.
-          </p>
-        </div>
+        <div class="divider"></div>
+        <p class="text-xs text-base-content/40 text-center">
+          &copy; {{ currentYear }} Tameri. Tous droits réservés.
+        </p>
       </div>
     </footer>
   `,

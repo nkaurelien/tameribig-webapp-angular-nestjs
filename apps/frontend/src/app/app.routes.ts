@@ -61,7 +61,11 @@ export const routes: Routes = [
             (m) => m.CONSOLE_ROUTES,
           ),
       },
-      // { path: 'coorporate', loadChildren: () => import('./features/coorporate/coorporate.routes').then(m => m.COORPORATE_ROUTES) },
+      {
+        path: 'info',
+        loadChildren: () =>
+          import('./features/info/info.routes').then((m) => m.INFO_ROUTES),
+      },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
   },
