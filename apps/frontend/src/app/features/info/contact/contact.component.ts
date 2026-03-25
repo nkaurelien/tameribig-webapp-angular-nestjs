@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { siteConfig } from '../../../core/site.config';
 
 @Component({
   selector: 'app-contact',
@@ -17,25 +18,49 @@ import { FormsModule } from '@angular/forms';
         <div class="md:col-span-1 space-y-6">
           <div>
             <h3 class="font-semibold text-sm mb-1">Email</h3>
-            <p class="text-sm text-base-content/60">
-              contact&#64;tameribig.kamitbrains.fr
-            </p>
+            <p class="text-sm text-base-content/60">{{ site.email }}</p>
           </div>
           <div>
             <h3 class="font-semibold text-sm mb-1">Réseaux sociaux</h3>
-            <div class="flex gap-3">
-              <span class="badge badge-outline badge-sm">Facebook</span>
-              <span class="badge badge-outline badge-sm">Instagram</span>
-              <span class="badge badge-outline badge-sm">Twitter</span>
+            <div class="flex gap-3 flex-wrap">
+              @if (site.social.facebook) {
+                <a
+                  [href]="site.social.facebook"
+                  target="_blank"
+                  class="badge badge-outline badge-sm no-underline"
+                  >Facebook</a
+                >
+              }
+              @if (site.social.instagram) {
+                <a
+                  [href]="site.social.instagram"
+                  target="_blank"
+                  class="badge badge-outline badge-sm no-underline"
+                  >Instagram</a
+                >
+              }
+              @if (site.social.twitter) {
+                <a
+                  [href]="site.social.twitter"
+                  target="_blank"
+                  class="badge badge-outline badge-sm no-underline"
+                  >Twitter</a
+                >
+              }
             </div>
           </div>
           <div>
             <h3 class="font-semibold text-sm mb-1">Horaires</h3>
-            <p class="text-sm text-base-content/60">
-              Lundi – Vendredi : 8h – 18h<br />
-              Samedi : 9h – 15h
-            </p>
+            <p class="text-sm text-base-content/60">{{ site.contact.hours }}</p>
           </div>
+          @if (site.contact.address) {
+            <div>
+              <h3 class="font-semibold text-sm mb-1">Adresse</h3>
+              <p class="text-sm text-base-content/60">
+                {{ site.contact.address }}
+              </p>
+            </div>
+          }
         </div>
 
         <!-- Contact form -->
@@ -125,6 +150,7 @@ import { FormsModule } from '@angular/forms';
   `,
 })
 export class ContactComponent {
+  readonly site = siteConfig;
   name = '';
   email = '';
   subject = '';

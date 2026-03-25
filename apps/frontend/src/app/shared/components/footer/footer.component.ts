@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { siteConfig } from '../../../core/site.config';
 
 @Component({
   selector: 'app-footer',
@@ -19,10 +20,10 @@ import { RouterLink } from '@angular/router';
                 alt="Tameri"
                 class="w-7 h-7 rounded-full"
               />
-              <span class="font-semibold">Tameri</span>
+              <span class="font-semibold">{{ site.name }}</span>
             </a>
             <p class="text-sm text-base-content/50 leading-relaxed">
-              Plateforme de partage de médias créatifs.
+              {{ site.tagline }}
             </p>
           </div>
           <div>
@@ -129,12 +130,13 @@ import { RouterLink } from '@angular/router';
         </div>
         <div class="divider"></div>
         <p class="text-xs text-base-content/40 text-center">
-          &copy; {{ currentYear }} Tameri. Tous droits réservés.
+          &copy; {{ currentYear }} {{ site.name }}. Tous droits réservés.
         </p>
       </div>
     </footer>
   `,
 })
 export class FooterComponent {
+  readonly site = siteConfig;
   readonly currentYear = new Date().getFullYear();
 }

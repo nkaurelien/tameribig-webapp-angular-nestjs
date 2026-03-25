@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { siteConfig } from '../../../core/site.config';
 
 @Component({
   selector: 'app-privacy',
@@ -111,7 +112,8 @@ import { Component } from '@angular/core';
           </ul>
           <p class="mt-2">
             Pour exercer ces droits, contactez-nous à
-            <strong>contact&#64;tameribig.kamitbrains.fr</strong>.
+            <strong>{{ site.email }}</strong
+            >.
           </p>
         </section>
 
@@ -140,4 +142,6 @@ import { Component } from '@angular/core';
     </div>
   `,
 })
-export class PrivacyComponent {}
+export class PrivacyComponent {
+  readonly site = siteConfig;
+}

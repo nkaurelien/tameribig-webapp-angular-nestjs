@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { siteConfig } from '../../../core/site.config';
 
 @Component({
   selector: 'app-terms',
@@ -17,7 +18,7 @@ import { Component } from '@angular/core';
           <h2 class="text-lg font-semibold text-base-content mb-2">1. Objet</h2>
           <p>
             Les présentes conditions régissent l'utilisation de la plateforme
-            Tameri, accessible à l'adresse tameribig.kamitbrains.fr. En créant
+            {{ site.name }}, accessible à l'adresse {{ site.domain }}. En créant
             un compte ou en utilisant le service, vous acceptez ces conditions
             dans leur intégralité.
           </p>
@@ -111,9 +112,9 @@ import { Component } from '@angular/core';
             8. Droit applicable
           </h2>
           <p>
-            Les présentes conditions sont soumises au droit camerounais. En cas
-            de litige, les parties s'engagent à rechercher une solution amiable
-            avant toute action judiciaire.
+            Les présentes conditions sont soumises au {{ site.legal.law }}. En
+            cas de litige, les parties s'engagent à rechercher une solution
+            amiable avant toute action judiciaire.
           </p>
         </section>
 
@@ -123,11 +124,14 @@ import { Component } from '@angular/core';
           </h2>
           <p>
             Pour toute question relative à ces conditions, contactez-nous à
-            <strong>contact&#64;tameribig.kamitbrains.fr</strong>.
+            <strong>{{ site.email }}</strong
+            >.
           </p>
         </section>
       </div>
     </div>
   `,
 })
-export class TermsComponent {}
+export class TermsComponent {
+  readonly site = siteConfig;
+}
