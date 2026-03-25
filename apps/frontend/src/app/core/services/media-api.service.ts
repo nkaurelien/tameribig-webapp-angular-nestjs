@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
-import { Media } from '../../shared/models/media.model';
+import { Media, PublicMedia } from '../../shared/models/media.model';
 import { environment } from '../../../environments/environment';
 
 export interface UpdateMediaDto {
@@ -43,5 +43,17 @@ export class MediaApiService {
 
   deleteMedia(id: string): Observable<void> {
     return this.api.delete<void>(`/media/${id}`);
+  }
+
+  getById(id: string): Observable<PublicMedia> {
+    return this.api.get<PublicMedia>(`/media/${id}`);
+  }
+
+  getDownloadUrl(id: string): Observable<{ url: string }> {
+    return this.api.get<{ url: string }>(`/media/${id}/download`);
+  }
+
+  upvote(id: string): Observable<{ success: boolean }> {
+    return this.api.post<{ success: boolean }>(`/media/${id}/upvote`, {});
   }
 }

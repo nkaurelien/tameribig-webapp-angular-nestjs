@@ -62,6 +62,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'media/:id',
+        loadComponent: () =>
+          import('./features/media-detail/media-detail.component').then(
+            (m) => m.MediaDetailComponent,
+          ),
+      },
+      {
         path: 'info',
         loadChildren: () =>
           import('./features/info/info.routes').then((m) => m.INFO_ROUTES),

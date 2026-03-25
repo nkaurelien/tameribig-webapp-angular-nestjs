@@ -17,7 +17,7 @@
 
 - **Frontend**
   - [Architecture Angular 19](frontend/architecture.md)
-  - [Composants PrimeNG](frontend/primeng.md)
+  - [DaisyUI & Thème](frontend/daisyui.md)
   - [Routes](frontend/routes.md)
   - [Auth (SuperTokens)](frontend/auth.md)
 

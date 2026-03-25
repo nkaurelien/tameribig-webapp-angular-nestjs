@@ -8,16 +8,16 @@ Tameri est une plateforme web permettant d'explorer, partager et télécharger d
 
 ## Stack technique
 
-| Composant       | Technologie                           |
-| --------------- | ------------------------------------- |
-| Backend         | NestJS 11 + TypeScript 5.9            |
-| Frontend        | Angular 19 + PrimeNG + Tailwind CSS 4 |
-| Base de données | CouchDB 3                             |
-| Auth            | SuperTokens 24                        |
-| Stockage        | MinIO (S3-compatible)                 |
-| Images          | imgproxy                              |
-| Cache           | Redis 7                               |
-| Infra           | Docker Compose                        |
+| Composant       | Technologie                             |
+| --------------- | --------------------------------------- |
+| Backend         | NestJS 11 + TypeScript 5.9              |
+| Frontend        | Angular 19 + DaisyUI 5 + Tailwind CSS 4 |
+| Base de données | CouchDB 3                               |
+| Auth            | SuperTokens 24                          |
+| Stockage        | MinIO (S3-compatible)                   |
+| Images          | imgproxy                                |
+| Cache           | Redis 7                                 |
+| Infra           | Docker Compose                          |
 
 ## Structure du monorepo
 

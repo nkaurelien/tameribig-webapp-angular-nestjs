@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**Tameri Project** is a monorepo (pnpm workspaces) migrating from `tameribig-server` (NestJS 7 + MongoDB + Firebase) to a modern stack. The backend is functional with core modules migrated. The frontend is a placeholder.
+**Tameri Project** is a monorepo (pnpm workspaces) migrating from `tameribig-server` (NestJS 7 + MongoDB + Firebase) to a modern stack. The backend is functional with core modules migrated. The frontend is functional with auth, media management, explorer, and info pages implemented.
 
 ## Tech Stack
 
@@ -42,7 +42,13 @@ tameri-project/
 │   │       ├── storage/  # MinIO S3 + imgproxy (global module)
 │   │       ├── app.module.ts
 │   │       └── main.ts
-│   └── frontend/         # @tameri/frontend - Placeholder (not started)
+│   └── frontend/         # @tameri/frontend - Angular 19 + DaisyUI 5
+│       └── src/app/
+│           ├── core/         # Auth, services, interceptors, site.config
+│           ├── features/     # Feature modules (auth, console, explorer, home, info, media-detail, search, topics)
+│           ├── layouts/      # Auth layout, main layout
+│           ├── shared/       # Components (media-card, navigation, footer), models
+│           └── store/        # NgRx Signal Stores (auth, user)
 ├── docker/               # DB init scripts
 ├── docker-compose.yml    # 7 services: app, postgres, supertokens, couchdb, minio, imgproxy, redis
 ├── Makefile              # Dev commands
@@ -178,11 +184,11 @@ IMGPROXY_URL, IMGPROXY_KEY, IMGPROXY_SALT
 
 ### Not Started
 
-- [ ] **Frontend** (`apps/frontend/` is a placeholder) — see Frontend Migration section below
-- [ ] **Email service** — Original had Nodemailer + Handlebars/Postmark templates
+- [ ] **Email service** — Original had Nodemailer + Handlebars/Postmark templates (email-templates.ts created, needs SMTP)
 - [ ] **Zitadel OIDC** — Target auth system (currently using SuperTokens as intermediate)
 - [ ] **Scheduler service** — Original had cron/scheduled tasks
 - [ ] **Push notifications** — Original used OneSignal
+- [ ] **Network** (social features) — `/api/users` public profiles
 
 ## Frontend Migration
 
@@ -206,39 +212,46 @@ The original frontend is at `../tameribig-webapp-angular/` (Angular 8.2.14, 114 
 
 ### Modules to Migrate (priority order)
 
-| Priority | Module                                  | Original source          | Backend endpoints             | Status      |
-| -------- | --------------------------------------- | ------------------------ | ----------------------------- | ----------- |
-| P1       | Auth (login, register, forgot-password) | `src/@core/auth/`        | `/auth/*` (SuperTokens)       | Not started |
-| P1       | Home / Landing page                     | `src/app/main/home/`     | `/api/topics`, `/api/media`   | Not started |
-| P2       | Explorer (images, videos, audio)        | `src/app/main/explorer/` | `/api/media`                  | Not started |
-| P2       | Search + suggestions                    | `src/app/main/search/`   | `/api/search/suggestions`     | Not started |
-| P3       | Topics / Categories                     | `src/app/main/category/` | `/api/topics`                 | Not started |
-| P3       | Console (user dashboard)                | `src/app/main/console/`  | `/api/users/me`, `/api/media` | Not started |
-| P4       | Corporate pages (about, FAQ, contact)   | `src/app/coorporate/`    | N/A (static)                  | Not started |
-| P4       | Network (social features)               | `src/app/main/network/`  | `/api/users`                  | Not started |
+| Priority | Module                                                  | Original source          | Backend endpoints                           | Status      |
+| -------- | ------------------------------------------------------- | ------------------------ | ------------------------------------------- | ----------- |
+| P1       | Auth (login, register, forgot-password, reset-password) | `src/@core/auth/`        | `/auth/*` (SuperTokens)                     | Done        |
+| P1       | Home / Landing page                                     | `src/app/main/home/`     | `/api/topics`, `/api/media`                 | Done        |
+| P2       | Explorer (images, videos, audio)                        | `src/app/main/explorer/` | `/api/media`                                | Done        |
+| P2       | Media detail + download                                 | N/A (new)                | `/api/media/:id`, `/api/media/:id/download` | Done        |
+| P2       | Search + suggestions                                    | `src/app/main/search/`   | `/api/search/suggestions`                   | Done        |
+| P3       | Topics / Categories                                     | `src/app/main/category/` | `/api/topics`                               | Done        |
+| P3       | Console (profile, media CRUD, settings)                 | `src/app/main/console/`  | `/api/users/me`, `/api/media`               | Done        |
+| P4       | Info pages (about, FAQ, contact, privacy, terms)        | `src/app/coorporate/`    | N/A (static)                                | Done        |
+| P4       | Network (social features)                               | `src/app/main/network/`  | `/api/users`                                | Not started |
 
-### Original Routes (reference)
+### Current Routes (implemented)
 
 ```
-/auth/login, /auth/register, /auth/forgot-password, /auth/logout
+/auth/login, /auth/register, /auth/forgot-password, /auth/reset-password, /auth/logout
 /home
-/explorer (images, videos, audio, creations)
+/explorer (images, videos, audio)
+/media/:id (detail + download)
 /search
-/topics
-/console
-/coorporate (about, services, contact, faq, recruitment, privacy)
-/network
+/topics, /topics/:slug
+/console (profile, media/list, media/upload, media/:id/edit, settings)
+/info (about, contact, faq, privacy, terms)
 ```
 
-### Migration Workflow (per module)
+### Not Yet Implemented
 
-1. Analyze the original Angular 8 module in `../tameribig-webapp-angular/`
-2. Identify the corresponding backend endpoints in `apps/backend/`
-3. Design new Angular 19 standalone components with signals
-4. Implement with Tailwind CSS + Angular CDK
-5. Connect to backend API via HttpClient + SuperTokens auth
-6. Write component + integration tests
-7. Update this migration status table
+```
+/network (social features)
+```
+
+### Frontend Key Patterns
+
+- **DaisyUI 5** as Tailwind CSS plugin — custom "tameri" theme (indigo primary) in `styles.css`
+- **`siteConfig`** (`core/site.config.ts`) — centralized site constants (name, email, domain, social, legal, media settings)
+- **Standalone components** with Angular Signals for reactive state
+- **NgRx Signal Store** for auth and user state (`store/auth.store.ts`, `store/user.store.ts`)
+- **SuperTokens** cookie-based auth via `authInterceptor` + `authGuard`
+- **`MediaApiService`** for all media operations (CRUD, upload, download, upvote)
+- **`ApiService`** as generic HTTP wrapper with base URL from environment
 
 ## Source Project Reference
 
@@ -260,3 +273,5 @@ The original project is at `../tameribig-server/` (same parent directory). Key l
 - **Global modules**: `DatabaseModule` and `StorageModule` are `@Global()`, no need to import them in feature modules
 - Prefer **pnpm** for package management, **SWC** for builds
 - Run `make docker-up` before `make dev` to start all dependencies
+- **DaisyUI 5** is the UI component library — use DaisyUI classes (`btn`, `card`, `input`, `alert`, etc.) not raw Tailwind for UI components
+- **`siteConfig`** is the single source of truth for site-wide constants — don't hardcode emails, domain, or social links

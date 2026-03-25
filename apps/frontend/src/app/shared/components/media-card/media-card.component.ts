@@ -1,17 +1,19 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { PublicMedia } from '../../models/media.model';
 
 @Component({
   selector: 'app-media-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   template: `
-    <div
-      class="group bg-white border border-gray-200 rounded-xl overflow-hidden cursor-pointer transition-all hover:shadow-lg hover:-translate-y-0.5"
+    <a
+      [routerLink]="['/media', media._id]"
+      class="card bg-base-100 border border-base-300 overflow-hidden cursor-pointer transition-all hover:shadow-lg hover:-translate-y-0.5 no-underline group"
     >
       <!-- Thumbnail -->
-      <div class="relative aspect-square overflow-hidden bg-gray-100">
+      <figure class="relative aspect-square overflow-hidden bg-base-200">
         <img
           [src]="media.urls.thumbnail || 'images/default.jpg'"
           [alt]="media.title"
@@ -19,25 +21,29 @@ import { PublicMedia } from '../../models/media.model';
           class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           (error)="onImageError($event)"
         />
-        <!-- Type badge -->
         <span
-          class="absolute top-2 right-2 text-xs font-medium px-2.5 py-0.5 rounded-full capitalize"
+          class="badge badge-sm absolute top-2 right-2 capitalize"
           [class]="typeBadgeClass"
         >
           {{ typeLabel }}
         </span>
-      </div>
+        @if (media.price && media.price > 0) {
+          <span class="badge badge-sm badge-neutral absolute top-2 left-2">
+            {{ media.price }} FCFA
+          </span>
+        }
+      </figure>
 
       <!-- Info -->
-      <div class="p-3">
-        <h3 class="text-sm font-medium text-gray-900 truncate">
+      <div class="card-body p-3">
+        <h3 class="text-sm font-medium truncate">
           {{ media.title }}
         </h3>
-        <div class="flex items-center justify-between mt-2">
-          <span class="text-xs text-gray-500">{{
+        <div class="flex items-center justify-between mt-1">
+          <span class="text-xs text-base-content/50">{{
             media.author.displayName || 'Anonyme'
           }}</span>
-          <div class="flex items-center gap-3 text-xs text-gray-400">
+          <div class="flex items-center gap-3 text-xs text-base-content/40">
             <span class="flex items-center gap-1">
               <svg
                 class="w-3.5 h-3.5"
@@ -79,7 +85,7 @@ import { PublicMedia } from '../../models/media.model';
           </div>
         </div>
       </div>
-    </div>
+    </a>
   `,
 })
 export class MediaCardComponent {
@@ -101,13 +107,13 @@ export class MediaCardComponent {
   get typeBadgeClass(): string {
     switch (this.media.mediaType) {
       case 'image':
-        return 'bg-orange-100 text-orange-700';
+        return 'badge-info';
       case 'video':
-        return 'bg-purple-100 text-purple-700';
+        return 'badge-secondary';
       case 'audio':
-        return 'bg-blue-100 text-blue-700';
+        return 'badge-accent';
       default:
-        return 'bg-gray-100 text-gray-700';
+        return 'badge-ghost';
     }
   }
 
