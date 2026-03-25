@@ -1,6 +1,7 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Location, DatePipe } from '@angular/common';
+import { Meta, Title } from '@angular/platform-browser';
 import { MediaApiService } from '../../core/services/media-api.service';
 import { PublicMedia } from '../../shared/models/media.model';
 import { siteConfig } from '../../core/site.config';
@@ -306,10 +307,12 @@ import { siteConfig } from '../../core/site.config';
     }
   `,
 })
-export class MediaDetailComponent implements OnInit {
+export class MediaDetailComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly location = inject(Location);
   private readonly mediaApi = inject(MediaApiService);
+  private readonly meta = inject(Meta);
+  private readonly title = inject(Title);
 
   readonly currency = siteConfig.media.currency;
 
@@ -328,12 +331,55 @@ export class MediaDetailComponent implements OnInit {
       next: (data) => {
         this.media.set(data);
         this.loading.set(false);
+        this.updateMetaTags(data);
       },
       error: () => {
         this.error.set('Impossible de charger ce média.');
         this.loading.set(false);
       },
     });
+  }
+
+  ngOnDestroy() {
+    this.title.setTitle(`${siteConfig.name} — ${siteConfig.tagline}`);
+    this.meta.removeTag('property="og:title"');
+    this.meta.removeTag('property="og:description"');
+    this.meta.removeTag('property="og:image"');
+    this.meta.removeTag('property="og:url"');
+    this.meta.removeTag('property="og:type"');
+    this.meta.removeTag('name="twitter:card"');
+    this.meta.removeTag('name="twitter:title"');
+    this.meta.removeTag('name="twitter:description"');
+    this.meta.removeTag('name="twitter:image"');
+    this.meta.removeTag('name="description"');
+  }
+
+  private updateMetaTags(media: PublicMedia) {
+    const mediaTitle = `${media.title} — ${siteConfig.name}`;
+    const description =
+      media.description ||
+      `${this.typeLabel()} par ${media.author.displayName || 'un créateur'} sur ${siteConfig.name}`;
+    const image = media.urls.preview || media.urls.thumbnail || '';
+    const url = window.location.href;
+
+    this.title.setTitle(mediaTitle);
+
+    this.meta.updateTag({ name: 'description', content: description });
+    this.meta.updateTag({ property: 'og:title', content: mediaTitle });
+    this.meta.updateTag({ property: 'og:description', content: description });
+    this.meta.updateTag({ property: 'og:image', content: image });
+    this.meta.updateTag({ property: 'og:url', content: url });
+    this.meta.updateTag({ property: 'og:type', content: 'article' });
+    this.meta.updateTag({
+      name: 'twitter:card',
+      content: 'summary_large_image',
+    });
+    this.meta.updateTag({ name: 'twitter:title', content: mediaTitle });
+    this.meta.updateTag({
+      name: 'twitter:description',
+      content: description,
+    });
+    this.meta.updateTag({ name: 'twitter:image', content: image });
   }
 
   goBack() {
