@@ -1,13 +1,18 @@
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 import supertokens from 'supertokens-node';
 import { SuperTokensExceptionFilter } from 'supertokens-nestjs';
+import { middleware } from 'supertokens-node/framework/express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // SuperTokens middleware — must run before global prefix and routing
+  app.use(middleware());
 
   // Security
   app.use(helmet());

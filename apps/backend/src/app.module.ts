@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { LoggerModule } from 'nestjs-pino';
+import { SuperTokensAuthGuard } from 'supertokens-nestjs';
 import { AuthModule } from './auth/index.js';
 import { CoreModule } from './@core/index.js';
 import { DatabaseModule } from './database/index.js';
@@ -38,6 +40,9 @@ import { SeederModule } from './seeder/index.js';
     SeederModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    { provide: APP_GUARD, useClass: SuperTokensAuthGuard },
+  ],
 })
 export class AppModule {}

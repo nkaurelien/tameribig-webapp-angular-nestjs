@@ -138,6 +138,39 @@ export class UsersController {
     return this.usersService.update(id, updateUserDto);
   }
 
+  @Delete('me/sessions')
+  @VerifySession()
+  @ApiBearerAuth()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Revoke all sessions for the current user' })
+  @ApiResponse({ status: 204, description: 'All sessions revoked' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async revokeMySessions(@Session() session: SessionContainer): Promise<void> {
+    await this.usersService.revokeAllSessions(session.getUserId());
+  }
+
+  @Delete(':id/sessions')
+  @VerifySession()
+  @ApiBearerAuth()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Revoke all sessions for a user by ID' })
+  @ApiParam({ name: 'id', description: 'User ID' })
+  @ApiResponse({ status: 204, description: 'All sessions revoked' })
+  @ApiResponse({ status: 403, description: 'Forbidden - not your account' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  async revokeUserSessions(
+    @Session() session: SessionContainer,
+    @Param('id') id: string,
+  ): Promise<void> {
+    const user = await this.usersService.findById(id);
+
+    if (user.supertokensId !== session.getUserId()) {
+      throw new ForbiddenException('You can only revoke your own sessions');
+    }
+
+    await this.usersService.revokeAllSessions(user.supertokensId);
+  }
+
   @Delete(':id')
   @VerifySession()
   @ApiBearerAuth()

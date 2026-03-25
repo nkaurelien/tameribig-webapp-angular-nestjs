@@ -5,6 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { DocumentScope, MangoQuery } from 'nano';
+import Session from 'supertokens-node/recipe/session';
 import { CouchDbService } from '../database/couchdb.service.js';
 import { User, PublicUserProfile } from './interfaces/user.interface.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
@@ -182,11 +183,16 @@ export class UsersService implements OnModuleInit {
   async findOrCreateBySupertokensId(
     supertokensId: string,
     email: string,
+    fullname?: string,
   ): Promise<User> {
     const existing = await this.findBySupertokensId(supertokensId);
     if (existing) return existing;
 
-    return this.create(supertokensId, { email });
+    return this.create(supertokensId, { email, fullname });
+  }
+
+  async revokeAllSessions(supertokensId: string): Promise<void> {
+    await Session.revokeAllSessionsForUser(supertokensId);
   }
 
   private generateUsername(email: string): string {
