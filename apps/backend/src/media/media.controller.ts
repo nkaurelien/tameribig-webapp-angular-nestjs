@@ -32,11 +32,15 @@ import { MediaService } from './media.service.js';
 import { CreateMediaDto } from './dto/create-media.dto.js';
 import { UpdateMediaDto } from './dto/update-media.dto.js';
 import { Media, PublicMedia } from './interfaces/media.interface.js';
+import { UsersService } from '../users/users.service.js';
 
 @ApiTags('media')
 @Controller('media')
 export class MediaController {
-  constructor(private readonly mediaService: MediaService) {}
+  constructor(
+    private readonly mediaService: MediaService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Post('upload')
   @VerifySession()
@@ -76,8 +80,8 @@ export class MediaController {
     @Body() dto: CreateMediaDto,
   ): Promise<Media> {
     const userId = session.getUserId();
-    const payload = session.getAccessTokenPayload() as Record<string, unknown>;
-    const displayName = (payload['displayName'] as string) || 'Anonymous';
+    const user = await this.usersService.findBySupertokensId(userId);
+    const displayName = user?.fullname ?? user?.username ?? 'Anonymous';
 
     return this.mediaService.create(userId, displayName, file, dto);
   }

@@ -5,6 +5,7 @@ import {
   IsNumber,
   IsEnum,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { MediaType } from '../interfaces/media.interface.js';
 
@@ -41,6 +42,7 @@ export class CreateMediaDto {
 
   @ApiPropertyOptional({ description: 'Price (0 for free)' })
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   price?: number;
 }

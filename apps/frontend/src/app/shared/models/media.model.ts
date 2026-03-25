@@ -5,9 +5,9 @@ export enum MediaType {
 }
 
 export enum MediaStatus {
-  Draft = 'Draft',
-  Published = 'Published',
-  Archived = 'Archived',
+  Draft = 'draft',
+  Published = 'published',
+  Archived = 'archived',
 }
 
 export interface MediaAuthor {
